@@ -67,11 +67,11 @@ nginx:
   volumes:
     - "/opt/cloudfleet/data/config/cache/nginx:/opt/cloudfleet/conf/nginx"
   links:
-    {% for app_name, app_properties in apps.iteritems() %}
-    - {{app_name}}
+    - musterroll
+    - mailbox
+    {% for app_name, app_properties in apps.iteritems() %}- {{app_name}}
     {% endfor %}
-    {% for user_name in users.keys() %}
-    - mailpile{{user_name}}
+    {% for user_name in users.keys() %}- mailpile{{user_name}}
     {% endfor %}
 
 pagekite:
