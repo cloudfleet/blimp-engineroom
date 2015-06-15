@@ -8,7 +8,7 @@ set -e
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-if [ -f /opt/cloudfleet/data/config/blimp-initialized ]
+if [ -f /opt/cloudfleet/data/config/blimp-initialized ]; then
   exit 0
 fi
 
@@ -27,7 +27,7 @@ cp /tmp/blimp-vars.sh /opt/cloudfleet/data/config/blimp-vars.sh
 
 source /opt/cloudfleet/data/config/blimp-vars.sh
 
-if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]
+if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
   openssl req -x509 -nodes -newkey rsa:4096 \
     -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
     -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
