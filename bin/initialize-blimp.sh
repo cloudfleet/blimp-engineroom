@@ -27,6 +27,7 @@ cp /tmp/blimp-vars.sh /opt/cloudfleet/data/config/blimp-vars.sh
 
 source /opt/cloudfleet/data/config/blimp-vars.sh
 
+mkdir -p /opt/cloudfleet/data/shared/tls
 if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
   openssl req -x509 -nodes -newkey rsa:4096 \
     -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
