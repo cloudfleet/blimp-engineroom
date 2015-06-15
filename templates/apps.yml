@@ -1,0 +1,15 @@
+apps:
+  wellknown:
+    friendly_name: Wellknown
+    location: .well-known
+    image: cloudfleet/blimp-wellknown
+  cockpit:
+    friendly_name: Cockpit
+    location: ""
+    image: cloudfleet/blimp-cockpit
+  radicale:
+    friendly_name: Radicale
+    location: radicale
+    image: cloudfleet/blimp-radicale
+    dependencies:
+      - musterroll

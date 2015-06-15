@@ -1,0 +1,85 @@
+---
+doveshed:
+  hostname: doveshed
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-doveshed"
+  environment:
+    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+    CLOUDFLEET_SECRET: "{{'registry.marina.io' | env('CLOUDFLEET_SECRET')}}"
+
+mailbox:
+  hostname: mailbox
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mailbox"
+  volumes:
+    - "/opt/cloudfleet/data/shared/mails:/opt/cloudfleet/maildir"
+    - "/opt/cloudfleet/data/shared/users:/opt/cloudfleet/users"
+
+conduit:
+  hostname: "conduit"
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-conduit"
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+  environment:
+    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+    CLOUDFLEET_REGISTRY: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}"
+
+musterroll:
+  hostname: "musterroll"
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-musterroll"
+  volumes:
+    - "/opt/cloudfleet/data/shared/users:/opt/cloudfleet/data"
+  environment:
+    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+  links:
+    - "conduit"
+
+
+{% for app_name, app_properties in apps.iteritems() %}
+{{app_name}}:
+    hostname: "{{app_name}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}"
+    links:
+      - musterroll
+      - doveshed
+    volumes:
+      - "/opt/cloudfleet/data/apps/{{app_name}}:/opt/cloudfleet/data"
+    environment:
+      CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+{% endfor %}
+
+{% for user_name in users.keys() %}
+mailpile{{user_name}}:
+    hostname: "mailpile-{{user_name}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mailpile"
+    links:
+      - "doveshed"
+    volumes:
+      - "/opt/cloudfleet/data/shared/gnupg/{{user_name}}:/mailpile-data/.gnupg"
+      - "/opt/cloudfleet/data/shared/mails/{{user_name}}:/opt/cloudfleet/Mails"
+      - "/opt/cloudfleet/data/apps/mailpile/{{user_name}}:/mailpile-data/.local/share/Mailpile"
+    environment:
+      - "CLOUDFLEET_USERNAME={{user_name}}"
+{% endfor %}
+
+
+nginx:
+  hostname: nginx
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-nginx"
+  volumes:
+    - "/opt/cloudfleet/data/config/cache/nginx:/opt/cloudfleet/conf/nginx"
+  links:
+    {% for app_name, app_properties in apps.iteritems() %}
+    - {{app_name}}
+    {% endfor %}
+    {% for user_name in users.keys() %}
+    - mailpile{{user_name}}
+    {% endfor %}
+
+pagekite:
+  hostname: pagekite
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-pagekite"
+  links:
+    - "nginx"
+  environment:
+    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+    CLOUDFLEET_HOST: "{{'blimpyard.cloudfleet.io' | env('CLOUDFLEET_HOST')}}"
+    CLOUDFLEET_SECRET: "{{cloudfleet.secret}}"
