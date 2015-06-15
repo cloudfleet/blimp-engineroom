@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script updates the docker images used based on the current
-# docker-compose.yml 
+# docker-compose.yml
 
 echo "=================================="
 echo " Fetching new image versions ..."

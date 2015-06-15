@@ -3,7 +3,7 @@
 # This script updates the docker-compose and nginx configuration files based on
 # installed apps and users.
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname $0 )" && pwd )
 source $DIR/cloudfleet-vars.sh
 source /opt/cloudfleet/data/config/blimp-vars.sh
 

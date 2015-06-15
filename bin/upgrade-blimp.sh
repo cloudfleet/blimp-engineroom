@@ -6,7 +6,7 @@
 # WARNING: Do not change this file if you are not totally sure you know what
 # you are doing as it might break the upgrade process
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname $0 )" && pwd )
 
 echo "========================================"
 echo " Upgrading blimp ..."

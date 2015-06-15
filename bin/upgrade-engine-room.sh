@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script updates the engine room.
 #
 # WARNING: Be very careful when changing this file!
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname $0 )" && pwd )
 echo "========================================"
 echo " Upgrading engine room ..."
 echo "========================================"
