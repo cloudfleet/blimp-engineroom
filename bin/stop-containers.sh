@@ -13,7 +13,7 @@ echo "=================================="
 
 (cd /opt/cloudfleet/data/config/cache && \
  docker-compose stop && \
- docker-compose rm \
+ docker-compose rm -f \
 )
 
 echo "=================================="
