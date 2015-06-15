@@ -12,11 +12,10 @@ echo "  Refreshing docker-compose file ... "
 echo "====================================="
 
 mkdir -p /opt/cloudfleet/data/config/cache/nginx/
-
+cd $DIR/../templates
 meta-compose \
   -d /opt/cloudfleet/data/config/apps.yml \
   -d /opt/cloudfleet/data/shared/users/users.json \
-  -t $DIR/../templates/meta-compose.yml \
   -o /opt/cloudfleet/data/config/cache/docker-compose.yml
 
 echo "====================================="
