@@ -82,4 +82,4 @@ pagekite:
   environment:
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_HOST: "{{'blimpyard.cloudfleet.io' | env('CLOUDFLEET_HOST')}}"
-    CLOUDFLEET_SECRET: "{{cloudfleet.secret}}"
+    CLOUDFLEET_SECRET: "{{'secret' | env('CLOUDFLEET_SECRET')}}"
