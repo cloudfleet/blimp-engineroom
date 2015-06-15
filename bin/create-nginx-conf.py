@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-import os
+import os, yaml
 
 jinja = Environment(loader=FileSystemLoader(os.path.dirname(os.path.realpath(__file__)) + "/../templates"), undefined=StrictUndefined)
 template = jinja.get_template("cloudfleet.conf")
