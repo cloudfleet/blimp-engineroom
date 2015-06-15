@@ -12,6 +12,8 @@ echo "  Refreshing docker-compose file ... "
 echo "====================================="
 
 mkdir -p /opt/cloudfleet/data/config/cache/nginx/
+$DIR/create-nginx-conf.py
+
 cd $DIR/../templates
 meta-compose \
   -d /opt/cloudfleet/data/config/apps.yml \
