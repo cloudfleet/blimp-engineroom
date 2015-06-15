@@ -8,7 +8,7 @@ echo "=============================="
 echo "  Starting containers ... "
 echo "=============================="
 
-(cd /opt/cloudfleet/data/config/cache && docker-compose up -d)
+(cd /opt/cloudfleet/data/config/cache && docker-compose -p blimp up -d)
 
 echo "=============================="
 echo "  Started containers. "

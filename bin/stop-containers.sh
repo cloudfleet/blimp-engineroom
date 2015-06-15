@@ -12,8 +12,8 @@ echo "  Stopping containers ... "
 echo "=================================="
 
 (cd /opt/cloudfleet/data/config/cache && \
- docker-compose stop && \
- docker-compose rm -f \
+ docker-compose -p blimp stop && \
+ docker-compose -p blimp rm -f \
 )
 
 echo "=================================="
