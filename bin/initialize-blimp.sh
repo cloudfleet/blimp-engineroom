@@ -17,7 +17,7 @@ echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
 
 
 mkdir -p /opt/cloudfleet/data/config
-cp $DIR/../templates/app.yml /opt/cloudfleet/data/config
+cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
 # wget -qO- https://spire.cloudfleet.io/api/v1/blimp/init \
 #      --header=X_AUTH_ONE_TIME=`cat /opt/cloudfleet/one-time-key` \
