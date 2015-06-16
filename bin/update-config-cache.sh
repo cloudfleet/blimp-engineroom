@@ -7,6 +7,11 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 source $DIR/cloudfleet-vars.sh
 source /opt/cloudfleet/data/config/blimp-vars.sh
 
+export CLOUDFLEET_HOST
+export CLOUDFLEET_REGISTRY
+export CLOUDFLEET_DOMAIN
+export CLOUDFLEET_SECRET
+
 echo "====================================="
 echo "  Refreshing docker-compose file ... "
 echo "====================================="
