@@ -36,6 +36,15 @@ if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
 
     cp /opt/cloudfleet/data/shared/tls/tls_req.pem /opt/cloudfleet/data/shared/tls/tls_crt.pem
 fi
+if [ ! -f /opt/cloudfleet/data/shared/tls/cert-requested.status ]; then
+  $DIR/request_cert.py \
+      $CLOUDFLEET_DOMAIN \
+      $CLOUDFLEET_SECRET \
+      /opt/cloudfleet/data/shared/tls/tls_req.pem \
+      && \
+      touch /opt/cloudfleet/data/shared/tls/cert-requested.status
+fi
+
 
 
 echo `date` > /opt/cloudfleet/data/config/blimp-initialized
