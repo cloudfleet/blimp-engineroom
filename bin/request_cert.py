@@ -13,7 +13,10 @@ print('requesting: ' + url)
 files = {'signature': open(file_path, 'rb')}
 r = requests.post(url, {'domain': domain, 'secret': secret}, files=files)
 
-if r.status_code < 400:
+#if r.status_code < 400: # how it should be
+if r.json()["success"]:
+    print('Success: %s' % r.text)
     quit(0)
 else:
+    print('Error: %s' % r.text)
     quit(1)
