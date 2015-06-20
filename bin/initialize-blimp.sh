@@ -12,6 +12,9 @@ if [ -f /opt/cloudfleet/data/config/blimp-initialized ]; then
   exit 0
 fi
 
+# docker-compose will be rendered in this folder
+mkdir -p /opt/cloudfleet/data/config/cache
+
 mkdir -p /opt/cloudfleet/data/shared/users
 echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
 
