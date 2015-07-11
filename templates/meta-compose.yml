@@ -71,7 +71,7 @@ mailpile{{user_name}}:
       CLOUDFLEET_USER_FULLNAME: "{{user_name}}"
       {% if 'aliases' in user %}
       CLOUDFLEET_USER_ALIASES: "{{user.aliases | join(';')}}"
-      {% end if %}
+      {% endif %}
       CLOUDFLEET_USERNAME: "{{user_name}}"
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
 
