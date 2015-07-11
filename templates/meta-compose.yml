@@ -69,7 +69,7 @@ mailpile{{user_name}}:
       - "/opt/cloudfleet/data/apps/mailpile/{{user_name}}:/mailpile-data/.local/share/Mailpile"
     environment:
       CLOUDFLEET_USER_FULLNAME: "{{user_name}}"
-      CLOUDFLEET_USER_ALIASES: "{{user.aliases | join(';')}}"
+      #CLOUDFLEET_USER_ALIASES: "{{user.aliases | join(';')}}"
       CLOUDFLEET_USERNAME: "{{user_name}}"
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
 
