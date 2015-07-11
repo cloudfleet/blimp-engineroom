@@ -57,7 +57,7 @@ musterroll:
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
 {% endfor %}
 
-{% for user_name in users.keys() %}
+{% for user_name, user in users.iteritems() %}
 mailpile{{user_name}}:
     hostname: "mailpile-{{user_name}}"
     image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mailpile"
@@ -68,7 +68,11 @@ mailpile{{user_name}}:
       - "/opt/cloudfleet/data/shared/mails/{{user_name}}:/opt/cloudfleet/Mails"
       - "/opt/cloudfleet/data/apps/mailpile/{{user_name}}:/mailpile-data/.local/share/Mailpile"
     environment:
-      - "CLOUDFLEET_USERNAME={{user_name}}"
+      CLOUDFLEET_USER_FULLNAME: "{{user_name}}"
+      CLOUDFLEET_USER_ALIASES: "{{user.aliases | join(';')}}"
+      CLOUDFLEET_USERNAME: "{{user_name}}"
+      CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+
 {% endfor %}
 
 
@@ -81,7 +85,7 @@ nginx:
   links:
     - musterroll
     - mailbox
-    - sonar
+    - conduit
     {% for app_name, app_properties in apps.iteritems() %}- {{app_name}}
     {% endfor %}
     {% for user_name in users.keys() %}- mailpile{{user_name}}
