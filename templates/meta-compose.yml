@@ -27,12 +27,6 @@ conduit:
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_REGISTRY: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}"
 
-sonar:
-  hostname: "sonar"
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-sonar"
-  links:
-    - "conduit"
-
 musterroll:
   hostname: "musterroll"
   image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-musterroll"
