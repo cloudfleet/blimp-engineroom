@@ -3,6 +3,7 @@ doveshed:
   hostname: doveshed
   image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-doveshed"
   environment:
+    CLOUDFLEET_MAIL_RELAY: "{{'cloudfleet.cloudfleet.io' | env('CLOUDFLEET_MAIL_RELAY')}}"
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_SECRET: "{{'registry.marina.io' | env('CLOUDFLEET_SECRET')}}"
   volumes:
