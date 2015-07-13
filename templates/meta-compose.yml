@@ -8,7 +8,7 @@ doveshed:
     CLOUDFLEET_SECRET: "{{'registry.marina.io' | env('CLOUDFLEET_SECRET')}}"
   volumes:
     - "/opt/cloudfleet/data/shared/tls/tls_crt.pem:/usr/src/app/config/tls_crt.pem"
-    - "/opt/cloudfleet/data/shared/tls/tls_crt.key:/usr/src/app/config/tls_crt.key"
+    - "/opt/cloudfleet/data/shared/tls/tls_crt.key:/usr/src/app/config/tls_key.pem"
 
 mailbox:
   hostname: mailbox
