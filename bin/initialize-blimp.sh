@@ -35,7 +35,7 @@ if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
   openssl req -x509 -nodes -newkey rsa:4096 \
     -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
     -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
-    -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=$CLOUDFLEET_DOMAIN
+    -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN
 
     cp /opt/cloudfleet/data/shared/tls/tls_req.pem /opt/cloudfleet/data/shared/tls/tls_crt.pem
 fi
