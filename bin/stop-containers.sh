@@ -8,7 +8,7 @@
 
 
 echo "=================================="
-echo "  Stopping containers ... "
+echo "`date "+%F %T"`  Stopping containers ... "
 echo "=================================="
 
 (cd /opt/cloudfleet/data/config/cache && \
@@ -17,11 +17,11 @@ echo "=================================="
 )
 
 echo "=================================="
-echo "  Stopped and deleted containers. "
+echo "`date "+%F %T"`  Stopped and deleted containers. "
 echo "=================================="
 
 echo "=================================="
-echo "  Removing obsolete images ... "
+echo "`date "+%F %T"`  Removing obsolete images ... "
 echo "=================================="
 
 
@@ -31,5 +31,5 @@ if [ -n "$IMAGES_TO_DELETE" ]; then
 fi
 
 echo "=================================="
-echo "  Removed obsolete images. "
+echo "`date "+%F %T"`  Removed obsolete images. "
 echo "=================================="

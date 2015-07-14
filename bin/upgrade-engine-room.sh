@@ -6,11 +6,11 @@
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 echo "========================================"
-echo " Upgrading engine room ..."
+echo "`date "+%F %T"` Upgrading engine room ..."
 echo "========================================"
 
 (cd $DIR && git pull)
 
 echo "========================================"
-echo " Upgraded engine room"
+echo "`date "+%F %T"` Upgraded engine room"
 echo "========================================"

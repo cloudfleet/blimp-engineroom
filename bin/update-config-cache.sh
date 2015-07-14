@@ -13,7 +13,7 @@ export CLOUDFLEET_DOMAIN
 export CLOUDFLEET_SECRET
 
 echo "====================================="
-echo "  Refreshing docker-compose file ... "
+echo "`date "+%F %T"`  Refreshing docker-compose file ... "
 echo "====================================="
 
 mkdir -p /opt/cloudfleet/data/config/cache/nginx/
@@ -26,5 +26,5 @@ meta-compose \
   -o /opt/cloudfleet/data/config/cache/docker-compose.yml
 
 echo "====================================="
-echo "  Refreshed docker-compose file ...  "
+echo "`date "+%F %T"`  Refreshed docker-compose file ...  "
 echo "====================================="

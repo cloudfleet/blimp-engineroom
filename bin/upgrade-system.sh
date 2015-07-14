@@ -4,11 +4,11 @@
 
 
 echo "========================================"
-echo " Upgrading system ..."
+echo "`date "+%F %T"` Upgrading system ..."
 echo "========================================"
 
 echo "Nothing to do ..."
 
 echo "========================================"
-echo " Upgraded system"
+echo "`date "+%F %T"` Upgraded system"
 echo "========================================"

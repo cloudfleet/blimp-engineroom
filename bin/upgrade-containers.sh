@@ -5,7 +5,7 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 
 echo "========================================"
-echo " Upgrading containers ..."
+echo "`date "+%F %T"` Upgrading containers ..."
 echo "========================================"
 
 $DIR/update-images.sh
@@ -15,5 +15,5 @@ $DIR/start-containers.sh
 
 
 echo "========================================"
-echo " Upgraded containers"
+echo "`date "+%F %T"` Upgraded containers"
 echo "========================================"

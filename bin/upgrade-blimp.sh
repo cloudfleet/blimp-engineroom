@@ -9,7 +9,7 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 
 echo "========================================"
-echo " Upgrading blimp ..."
+echo "`date "+%F %T"` Upgrading blimp ..."
 echo "========================================"
 
 T="$(date +%s)"
@@ -19,5 +19,5 @@ $DIR/upgrade-containers.sh
 T="$(($(date +%s)-T))"
 
 echo "========================================"
-echo " Upgrade and restart took ${T} seconds."
+echo "`date "+%F %T"` Upgrade and restart took ${T} seconds."
 echo "========================================"

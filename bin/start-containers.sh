@@ -5,11 +5,11 @@
 
 
 echo "=============================="
-echo "  Starting containers ... "
+echo "`date "+%F %T"` Starting containers ... "
 echo "=============================="
 
 (cd /opt/cloudfleet/data/config/cache && docker-compose -p blimp up -d)
 
 echo "=============================="
-echo "  Started containers. "
+echo "`date "+%F %T"`  Started containers. "
 echo "=============================="
