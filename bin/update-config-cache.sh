@@ -11,6 +11,15 @@ export CLOUDFLEET_HOST
 export CLOUDFLEET_REGISTRY
 export CLOUDFLEET_DOMAIN
 export CLOUDFLEET_SECRET
+echo "====================================="
+echo "`date "+%F %T"`  Updating apps file ... "
+echo "====================================="
+
+cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config/apps.yml
+
+echo "====================================="
+echo "`date "+%F %T"`  Updated apps file ... "
+echo "====================================="
 
 echo "====================================="
 echo "`date "+%F %T"`  Refreshing docker-compose file ... "
@@ -27,4 +36,9 @@ meta-compose \
 
 echo "====================================="
 echo "`date "+%F %T"`  Refreshed docker-compose file ...  "
+echo "====================================="
+
+
+echo "====================================="
+echo "`date "+%F %T"`  Updating apps file ... "
 echo "====================================="
