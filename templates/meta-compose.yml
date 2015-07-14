@@ -27,6 +27,7 @@ conduit:
   environment:
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_REGISTRY: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}"
+    CLOUDFLEET_SECRET: "{{'secret' | env('CLOUDFLEET_SECRET')}}"
 
 musterroll:
   hostname: "musterroll"
