@@ -3,13 +3,16 @@ apps:
     friendly_name: Wellknown
     location: .well-known
     image: cloudfleet/blimp-wellknown
+    needs_authentication: false
   cockpit:
     friendly_name: Cockpit
     location: ""
     image: cloudfleet/blimp-cockpit
+    needs_authentication: true
   radicale:
     friendly_name: Radicale
     location: radicale
     image: cloudfleet/blimp-radicale
+    needs_authentication: false
     dependencies:
       - musterroll
