@@ -12,12 +12,24 @@ echo "`date "+%F %T"`  Stopping containers ... "
 echo "=================================="
 
 (cd /opt/cloudfleet/data/config/cache && \
- docker-compose -p blimp stop && \
+ docker-compose -p blimp stop \
+)
+
+echo "=================================="
+echo "`date "+%F %T"`  Stopped containers. "
+echo "=================================="
+
+echo "=================================="
+echo "`date "+%F %T"`  Deleting containers. "
+echo "=================================="
+
+
+(cd /opt/cloudfleet/data/config/cache && \
  docker-compose -p blimp rm -f \
 )
 
 echo "=================================="
-echo "`date "+%F %T"`  Stopped and deleted containers. "
+echo "`date "+%F %T"`  Deleted containers. "
 echo "=================================="
 
 echo "=================================="
