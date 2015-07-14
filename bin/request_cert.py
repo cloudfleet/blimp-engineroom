@@ -10,8 +10,9 @@ domain = sys.argv[1]
 secret = sys.argv[2]
 file_path = sys.argv[3]
 print('requesting: ' + url)
-files = {'signature': open(file_path, 'rb')}
-r = requests.post(url, {'domain': domain, 'secret': secret}, files=files)
+with open(file_path, 'rb') as cert_req_file:
+    cert_req = cert_req_file.read()
+r = requests.post(url, {'domain': domain, 'secret': secret, 'cert_req': cert_req})
 
 #if r.status_code < 400: # how it should be
 if r.json()["success"]:
