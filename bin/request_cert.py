@@ -5,7 +5,7 @@ of the cretificate request API endpoint.
 
 import requests, sys
 
-url = 'https://spire.cloudfleet.io/dashboard/blimp/api/request_cert'
+url = 'https://spire.cloudfleet.io/dashboard/blimp/api/request_cert_json'
 domain = sys.argv[1]
 secret = sys.argv[2]
 file_path = sys.argv[3]
