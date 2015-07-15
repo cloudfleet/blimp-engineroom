@@ -2,7 +2,7 @@
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 
-$DIR/update-config-cache.sh
+$DIR/update-config.sh
 
 (cd /opt/cloudfleet/data/config/cache && \
  docker-compose -p blimp stop pagekite && \

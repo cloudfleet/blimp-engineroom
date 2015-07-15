@@ -10,7 +10,7 @@ echo "========================================"
 
 $DIR/update-images.sh
 $DIR/stop-containers.sh
-$DIR/update-config-cache.sh
+$DIR/update-config.sh
 $DIR/start-containers.sh
 
 
