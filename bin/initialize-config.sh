@@ -17,7 +17,7 @@ echo "====================================="
 mkdir -p /opt/cloudfleet/data/config/cache
 mkdir -p /opt/cloudfleet/data/shared/users
 
-if [ -f /opt/cloudfleet/data/shared/users/users.json ]; then
+if [ ! -f /opt/cloudfleet/data/shared/users/users.json ]; then
   echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
 fi
 
@@ -27,7 +27,7 @@ cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 # wget -qO- https://spire.cloudfleet.io/api/v1/blimp/init \
 #      --header=X_AUTH_ONE_TIME=`cat /opt/cloudfleet/one-time-key` \
 # > /opt/cloudfleet/data/config/blimp-vars.sh
-if [ -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
+if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
   cp /tmp/blimp-vars.sh /opt/cloudfleet/data/config/blimp-vars.sh
 fi
 
