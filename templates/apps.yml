@@ -6,7 +6,7 @@ apps:
     needs_authentication: false
   cockpit:
     friendly_name: Cockpit
-    location: ""
+    location: "cockpit"
     image: cloudfleet/blimp-cockpit
     needs_authentication: true
   radicale:
