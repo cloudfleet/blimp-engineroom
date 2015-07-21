@@ -24,17 +24,11 @@ fi
 # For now always update apps file (until users can customize apps list)
 cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
-# wget -qO- https://spire.cloudfleet.io/api/v1/blimp/init \
-#      --header=X_AUTH_ONE_TIME=`cat /opt/cloudfleet/one-time-key` \
-# > /opt/cloudfleet/data/config/blimp-vars.sh
-if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
-  cp /tmp/blimp-vars.sh /opt/cloudfleet/data/config/blimp-vars.sh
-fi
 
-source /opt/cloudfleet/data/config/blimp-vars.sh
 
 mkdir -p /opt/cloudfleet/data/shared/tls
 if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
+  CLOUDFLEET_DOMAIN=$(cat /opt/cloudfleet/init/domain.txt)
   openssl req -x509 -nodes -newkey rsa:4096 \
     -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
     -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
@@ -44,13 +38,24 @@ if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
 fi
 
 if [ ! -f /opt/cloudfleet/data/shared/tls/cert-requested.status ]; then
+  CLOUDFLEET_OTP=$(cat /opt/cloudfleet/init/otp.txt)
+  CLOUDFLEET_DOMAIN=$(cat /opt/cloudfleet/init/domain.txt)
   $DIR/request_cert.py \
       $CLOUDFLEET_DOMAIN \
-      $CLOUDFLEET_SECRET \
+      $CLOUDFLEET_OTP \
       /opt/cloudfleet/data/shared/tls/tls_req.pem \
       && \
       touch /opt/cloudfleet/data/shared/tls/cert-requested.status
 fi
+
+if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
+  $DIR/request_secret.py \
+      $CLOUDFLEET_DOMAIN \
+      /opt/cloudfleet/data/shared/tls/tls_key.pem \
+      /opt/cloudfleet/data/config/blimp-vars.sh
+fi
+
+
 echo "====================================="
 echo "`date "+%F %T"`  Initialized config where necessary ... "
 echo "====================================="
