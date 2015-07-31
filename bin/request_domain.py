@@ -12,7 +12,7 @@ domain_txt_path = '/opt/cloudfleet/data/config/domain.txt'
 
 print('retrieving domain for blimp: ' + domain_req_url)
 
-r = requests.get(domain_req_url, headers={'X_AUTH_OTP': otp})
+r = requests.get(domain_req_url, headers={'X-AUTH-OTP': otp})
 
 if r.status_code == 200:
     print('Success: %s' % r.text)

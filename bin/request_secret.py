@@ -26,7 +26,7 @@ hash.update(domain)
 
 signature = base64.b64encode(signer.sign(hash))
 
-r = requests.get(secret_req_url, headers={"X_AUTH_DOMAIN":signature})
+r = requests.get(secret_req_url, headers={"X-AUTH-DOMAIN":signature})
 
 if r.status_code == 200:
     print('Success: %s' % r.text)
