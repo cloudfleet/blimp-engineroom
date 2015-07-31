@@ -10,7 +10,7 @@ otp = sys.argv[2]
 cert_path = sys.argv[3]
 
 
-cert_req_url = 'https://spire.cloudfleet.io/api/v1/%s/certificate/request' % domain
+cert_req_url = 'https://spire.cloudfleet.io/api/v1/blimp/%s/certificate/request' % domain
 
 
 print('posting cert request to: ' + cert_req_url)

@@ -10,7 +10,7 @@ key_path = sys.argv[2]
 blimp_vars_path = sys.arv[3]
 
 
-secret_req_url = 'https://spire.cloudfleet.io/api/v1/%s/secret' % domain
+secret_req_url = 'https://spire.cloudfleet.io/api/v1/blimp/%s/secret' % domain
 
 print('getting secret')
 

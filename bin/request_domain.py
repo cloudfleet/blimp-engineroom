@@ -7,7 +7,7 @@ import requests, sys, json
 
 otp = sys.argv[1]
 
-domain_req_url = 'https://spire.cloudfleet.io/api/v1/domain'
+domain_req_url = 'https://spire.cloudfleet.io/api/v1/blimp/domain'
 domain_txt_path = '/opt/cloudfleet/data/config/domain.txt'
 
 print('retrieving domain for blimp: ' + domain_req_url)
