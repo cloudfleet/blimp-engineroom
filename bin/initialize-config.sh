@@ -24,6 +24,11 @@ fi
 # For now always update apps file (until users can customize apps list)
 cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
+# Set crontab
+crontab - <<EOF
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+0 4 * * * /opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
+EOF
 
 
 mkdir -p /opt/cloudfleet/data/shared/tls
