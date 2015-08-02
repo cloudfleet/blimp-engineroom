@@ -58,6 +58,7 @@ if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
     $DIR/request_secret.py \
         $CLOUDFLEET_DOMAIN \
         /opt/cloudfleet/data/shared/tls/tls_key.pem \
+        /opt/cloudfleet/data/shared/tls/tls_crt.pem \
         /opt/cloudfleet/data/config/blimp-vars.sh
   fi
 fi
