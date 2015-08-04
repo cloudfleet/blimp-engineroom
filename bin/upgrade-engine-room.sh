@@ -9,7 +9,7 @@ echo "========================================"
 echo "`date "+%F %T"` Upgrading engine room ..."
 echo "========================================"
 
-(cd $DIR && git pull)
+(cd $DIR && git pull -f)
 
 echo "========================================"
 echo "`date "+%F %T"` Upgraded engine room"
