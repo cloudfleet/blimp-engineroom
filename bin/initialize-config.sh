@@ -55,6 +55,7 @@ if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
   #fi
 
   if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
+    sleep 5
     $DIR/request_secret.py \
         $CLOUDFLEET_DOMAIN \
         /opt/cloudfleet/data/shared/tls/tls_key.pem \
