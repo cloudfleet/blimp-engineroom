@@ -38,9 +38,12 @@ if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
   $DIR/request_domain.py $CLOUDFLEET_OTP && \
   openssl req -x509 -nodes -newkey rsa:4096 \
     -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
-    -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
+    -out /opt/cloudfleet/data/shared/tls/tls_crt.pem \
     -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$(cat /opt/cloudfleet/data/config/domain.txt) && \
-  cp /opt/cloudfleet/data/shared/tls/tls_req.pem /opt/cloudfleet/data/shared/tls/tls_crt.pem
+  openssl req -new -sha256 \
+    -key /opt/cloudfleet/data/shared/tls/tls_key.pem \
+    -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
+    -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$(cat /opt/cloudfleet/data/config/domain.txt)    
 fi
 
 if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
