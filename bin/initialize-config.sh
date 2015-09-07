@@ -29,20 +29,26 @@ $DIR/create-crontab.sh
 CLOUDFLEET_OTP=$(ip addr | grep -1 eth0: | tail -1 | awk '{print $2}' | sed s/://g)
 
 mkdir -p /opt/cloudfleet/data/shared/tls
-if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
-  $DIR/request_domain.py $CLOUDFLEET_OTP && \
-  openssl req -x509 -nodes -newkey rsa:4096 \
-    -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
-    -out /opt/cloudfleet/data/shared/tls/tls_crt.pem \
-    -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$(cat /opt/cloudfleet/data/config/domain.txt) && \
-  openssl req -new -sha256 \
-    -key /opt/cloudfleet/data/shared/tls/tls_key.pem \
-    -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
-    -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$(cat /opt/cloudfleet/data/config/domain.txt)    
+
+if [ ! -f /opt/cloudfleet/data/config/domain.txt ]; then
+  $DIR/request_domain.py $CLOUDFLEET_OTP
 fi
+
 
 if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
   CLOUDFLEET_DOMAIN=$(cat /opt/cloudfleet/data/config/domain.txt)
+
+  if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
+    openssl req -x509 -nodes -newkey rsa:4096 \
+      -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
+      -out /opt/cloudfleet/data/shared/tls/tls_crt.pem \
+      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN && \
+    openssl req -new -sha256 \
+      -key /opt/cloudfleet/data/shared/tls/tls_key.pem \
+      -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
+      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN    
+  fi
+
   #if [ ! -f /opt/cloudfleet/data/shared/tls/cert-requested.status ]; then
     $DIR/request_cert.py \
         $CLOUDFLEET_DOMAIN \
