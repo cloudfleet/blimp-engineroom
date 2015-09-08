@@ -14,6 +14,7 @@ echo "========================================"
 
 T="$(date +%s)"
 $DIR/upgrade-engine-room.sh
+$DIR/initialize-config.sh
 $DIR/upgrade-system.sh
 $DIR/upgrade-containers.sh
 T="$(($(date +%s)-T))"

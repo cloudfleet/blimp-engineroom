@@ -5,8 +5,6 @@
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 
-$DIR/initialize-config.sh
-
 source $DIR/cloudfleet-vars.sh
 source /opt/cloudfleet/data/config/blimp-vars.sh
 
