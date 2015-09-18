@@ -8,6 +8,6 @@
 crontab - <<EOF
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 4 * * * sleep ${RANDOM:0:2}m; /opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
-@reboot /opt/cloudfleet/engineroom/bin/start-containers.sh >> /opt/cloudfleet/data/logs/start-containers.log 2>&1
+@reboot /opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
 EOF
 
