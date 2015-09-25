@@ -29,6 +29,7 @@ $DIR/create-crontab.sh
 CLOUDFLEET_OTP=$(ip addr | grep -1 eth0: | tail -1 | awk '{print $2}' | sed s/://g)
 
 mkdir -p /opt/cloudfleet/data/shared/tls
+cp $DIR/../templates/group16.pem /opt/cloudfleet/data/shared/tls/dhparams.pem
 
 if [ ! -f /opt/cloudfleet/data/config/domain.txt ]; then
   $DIR/request_domain.py $CLOUDFLEET_OTP
@@ -46,7 +47,7 @@ if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
     openssl req -new -sha256 \
       -key /opt/cloudfleet/data/shared/tls/tls_key.pem \
       -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
-      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN    
+      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN
   fi
 
   #if [ ! -f /opt/cloudfleet/data/shared/tls/cert-requested.status ]; then
