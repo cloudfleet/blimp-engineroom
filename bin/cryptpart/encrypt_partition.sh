@@ -2,12 +2,8 @@
 
 # source: http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 
-# TODO - find where the usb drive is via lsblk, label or something.
-STORAGE_DEVICE=/dev/sda
-STORAGE_PARTITION=/dev/sda1
-STORAGE_PARTITION_LABEL=sda1
-STORAGE_MAPPED_DEVICE=/dev/mapper/$STORAGE_PARTITION_LABEL
-STORAGE_MOUNTPOINT=/mnt
+DIR=$( cd "$( dirname $0 )" && pwd )
+. $DIR/set_partition_vars.sh
 
 # TODO - noninteractive fdisk to partition the drive
 # fdisk $STORAGE_DEVICE
@@ -25,10 +21,12 @@ apt-get install btrfs-tools # only once somewhere
 mkfs.btrfs $STORAGE_MAPPED_DEVICE
 
 # mount the storage partition
+mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
 # TODO:
 # - create keyfile
+
 # - decrypt and mount automatically on boot
 
 exit
