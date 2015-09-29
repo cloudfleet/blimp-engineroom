@@ -7,7 +7,7 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 
 # make sure the partition isn't already mounted
 ./close_partition.sh
-cryptdisks_stop sda1
+cryptdisks_stop $STORAGE_PARTITION_LABEL
 
 # noninteractive fdisk to partition the drive
 ./format_device.sh $STORAGE_DEVICE
@@ -34,12 +34,10 @@ mkfs.btrfs $STORAGE_MAPPED_DEVICE -L cloudfleet-storage
 mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
-./write_crypttab.sh
-cryptdisks_start sda1
-
-# TODO:
-# - create keyfile
-
 # - decrypt and mount automatically on boot
+./write_crypttab.sh
+cryptdisks_start $STORAGE_PARTITION_LABEL
+./write_fstab.sh
+mount -a
 
 exit
