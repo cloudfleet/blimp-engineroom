@@ -8,17 +8,22 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 # make sure the partition isn't already mounted
 ./close_partition.sh
 
-# TODO - noninteractive fdisk to partition the drive
-# fdisk $STORAGE_DEVICE
+# noninteractive fdisk to partition the drive
 ./format_device.sh $STORAGE_DEVICE
 
 # TODO:
 # - make noninteractive
 # - get partition name from lsblk
-cryptsetup --verbose --verify-passphrase luksFormat $STORAGE_PARTITION
+
+# create key file
+# TODO: see where this should be done really and find a good place for the file
+dd if=/dev/urandom of=$KEYFILE bs=1024 count=4
+chmod 400 $KEYFILE
+
+cryptsetup --verbose luksFormat $STORAGE_PARTITION - < $KEYFILE
 
 # open partiotion (for elsewhere)
-cryptsetup luksOpen $STORAGE_PARTITION $STORAGE_PARTITION_LABEL
+cryptsetup luksOpen $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
 
 # format it to btrfs
 apt-get install btrfs-tools # only once somewhere
