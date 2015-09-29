@@ -28,7 +28,7 @@ cryptsetup luksOpen $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYF
 
 # format it to btrfs
 apt-get install btrfs-tools # only once somewhere
-mkfs.btrfs $STORAGE_MAPPED_DEVICE -L cloudfleet-storage
+mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
 # mount the storage partition
 mkdir -p $STORAGE_MOUNTPOINT
