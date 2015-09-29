@@ -25,11 +25,6 @@ n
 p
 2
 
-+14G
-n
-p
-3
-
 
 w
 " | fdisk $i; done
