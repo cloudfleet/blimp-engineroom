@@ -3,6 +3,9 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+# disable swap
+swapoff -a
+
 # unmount the partition
 echo "unmounting the partition"
 umount $STORAGE_MOUNTPOINT

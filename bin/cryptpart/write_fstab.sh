@@ -15,4 +15,5 @@ fi
 
 # create the new /etc/fstab file
 cp /etc/fstab.original /etc/fstab
-echo "${STORAGE_MAPPED_DEVICE} $STORAGE_MOUNTPOINT btrfs" >> /etc/fstab
+echo "${SWAP_MAPPED_DEVICE} none swap pri=1,defaults 0 0
+${STORAGE_MAPPED_DEVICE} $STORAGE_MOUNTPOINT btrfs" >> /etc/fstab
