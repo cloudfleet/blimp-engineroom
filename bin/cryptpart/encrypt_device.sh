@@ -1,9 +1,18 @@
 #!/bin/bash
-
+#
+# CryptPart
+# =========
+#
+# This scrypt formats, encrypts and sets for auto-mounting of a USB device.
+# You need to provide the devie & key location in the set_partition_vars.sh script
+#
+# TODO:
+# - get partition name from lsblk automatically
+#
 # sources:
 #  - storage - http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 #  - swap - https://help.ubuntu.com/community/EncryptedFilesystemHowto3
-#  - 
+#  - swap 2 - http://unix.stackexchange.com/questions/64551/how-do-i-set-up-an-encrypted-swap-file-in-linux
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
@@ -14,10 +23,6 @@ cryptdisks_stop $STORAGE_PARTITION_LABEL
 
 # noninteractive fdisk to partition the drive
 ./format_device.sh $STORAGE_DEVICE
-
-# TODO:
-# - get partition name from lsblk
-# - do stuff for both created partitions (swap and storage)
 
 # create key file
 # TODO: see where this should be done really and find a good place for the file
