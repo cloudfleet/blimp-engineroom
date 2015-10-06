@@ -19,6 +19,6 @@ mkdir -p $STORAGE_MOUNTPOINT
 
 # create the new /etc/fstab file
 cp /etc/fstab.original /etc/fstab
-echo "${KEY_DEVICE} ${KEY_MOUNTPOINT} auto defaults 0 0
+echo "${KEY_PARTITION} ${KEY_MOUNTPOINT} auto defaults 0 0
 ${SWAP_MAPPED_DEVICE} none swap pri=1,defaults 0 0
 ${STORAGE_MAPPED_DEVICE} $STORAGE_MOUNTPOINT btrfs" >> /etc/fstab

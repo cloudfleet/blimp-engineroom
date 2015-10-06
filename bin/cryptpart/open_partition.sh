@@ -4,7 +4,7 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
 # open partiotion
-cryptsetup luksOpen $STORAGE_PARTITION $STORAGE_PARTITION_LABEL
+cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL
 
 # start using the swap
 swapon $SWAP_MAPPED_DEVICE

@@ -5,9 +5,8 @@ import re
 import pprint
 import fileinput
 
-
-# for line in fileinput.input():
-#     pass
+SWAP_LABEL = 'cf-swap'
+STORAGE_LABEL = 'cf-str'
 
 def parse_blk(blk_file):
     disks = []
@@ -48,9 +47,9 @@ def check_correct(disks):
             continue
         for partition in disk['partitions']:
             try:
-                if partition['crypt'] == 'cloudfleet-swap':
+                if partition['crypt'] == SWAP_LABEL:
                     swap_encrypted = True
-                if partition['crypt'] == 'cloudfleet-storage':
+                if partition['crypt'] == STORAGE_LABEL:
                     storage_encrypted = True
             except KeyError:
                 pass

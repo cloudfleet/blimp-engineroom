@@ -12,6 +12,6 @@ umount $STORAGE_MOUNTPOINT
 
 # close the LUKS partition
 echo "closing the LUKS partition"
-cryptsetup luksClose $STORAGE_PARTITION_LABEL
+cryptsetup close $STORAGE_PARTITION_LABEL
 
 exit

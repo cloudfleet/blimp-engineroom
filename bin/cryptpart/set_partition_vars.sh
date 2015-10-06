@@ -1,20 +1,24 @@
 #!/bin/bash
 
+# labels
+KEY_PARTITION_LABEL=cf-key
+SWAP_PARTITION_LABEL=cf-swap
+STORAGE_PARTITION_LABEL=cf-str
+
+BASE_MOUNTPOINT=/mnt
+
 # key
-KEY_DEVICE=/dev/disk/by-label/cf-key
-KEY_MOUNTPOINT=/storage-key
+KEY_PARTITION=/dev/disk/by-label/${KEY_PARTITION_LABEL}
+KEY_MOUNTPOINT=${BASE_MOUNTPOINT}/storage-key
 KEYFILE=$KEY_MOUNTPOINT/key
 
-# TODO - find where the usb drive is via lsblk, label or something.
-STORAGE_DEVICE=/dev/sda
-
+# storage & swap
+STORAGE_PARTITION=$(readlink -e /dev/disk/by-label/${STORAGE_PARTITION_LABEL})
+STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
 SWAP_PARTITION=${STORAGE_DEVICE}1
 STORAGE_PARTITION=${STORAGE_DEVICE}2
-
-SWAP_PARTITION_LABEL=cloudfleet-swap
-STORAGE_PARTITION_LABEL=cloudfleet-storage
 
 SWAP_MAPPED_DEVICE=/dev/mapper/$SWAP_PARTITION_LABEL
 STORAGE_MAPPED_DEVICE=/dev/mapper/$STORAGE_PARTITION_LABEL
 
-STORAGE_MOUNTPOINT=/storage
+STORAGE_MOUNTPOINT=${BASE_MOUNTPOINT}/storage

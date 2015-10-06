@@ -3,26 +3,37 @@
 # CryptPart
 # =========
 #
-# This scrypt formats, encrypts and sets for auto-mounting of a USB device.
-# You need to provide the devie & key location in the set_partition_vars.sh script
+# This scrypt formats, encrypts and sets for auto-mounting of a USB storage and a USB key device.
 #
-# TODO:
-# - get partition name from lsblk automatically
+# You need to provide two USBs that contain partitions with key and storage labels
+# from the set_partition_vars.sh script. Ideally, cf-key will be ext4 or similar,
+# so that we can set file permissions. FAT would work too.
+#
+# E.g.
+#
+# USB 1 - 1 partition labeled cf-str
+# USB 2 - 1 partition labeled cf-key
+#
 #
 # sources:
 #  - storage - http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 #  - swap - https://help.ubuntu.com/community/EncryptedFilesystemHowto3
 #  - swap 2 - http://unix.stackexchange.com/questions/64551/how-do-i-set-up-an-encrypted-swap-file-in-linux
+#  - btrfs - https://wiki.archlinux.org/index.php/Btrfs
+#  - btrfs 2 - http://unix.stackexchange.com/questions/190698/btrfs-mounting-a-subvolume-in-a-different-path-does-not-work-no-such-file-or
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+# get partition name from lsblk automatically and check the partitions
 lsblk | python check_partitions.py
 
 if [ $? -eq 0 ]; then
     echo "Partitions already encrypted. Not formatting"
     exit
 fi
+
+echo "Partitions not encrypted. Formatting now!"
 
 # make sure the partition isn't already mounted
 ./close_partition.sh
@@ -46,17 +57,18 @@ cryptsetup --verbose luksFormat $STORAGE_PARTITION - < $KEYFILE
 # dd if=/dev/zero bs=1024000 of=$SWAP_PARTITION
 
 # open partiotion (for elsewhere)
-cryptsetup luksOpen $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
+cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
 
 # format the swap
-mkswap $SWAP_MAPPED_DEVICE
+#mkswap $SWAP_MAPPED_DEVICE
+mkswap $SWAP_PARTITION
 
 # format it to btrfs
 apt-get install btrfs-tools # only once somewhere
 mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
 # start using the swap
-swapon $SWAP_MAPPED_DEVICE
+#swapon $SWAP_MAPPED_DEVICE
 
 # mount the storage partition
 mkdir -p $STORAGE_MOUNTPOINT
