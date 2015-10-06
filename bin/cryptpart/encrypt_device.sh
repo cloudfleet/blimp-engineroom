@@ -17,6 +17,13 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+lsblk | python check_partitions.py
+
+if [ $? -eq 0 ]; then
+    echo "Partitions already encrypted. Not formatting"
+    exit
+fi
+
 # make sure the partition isn't already mounted
 ./close_partition.sh
 cryptdisks_stop $STORAGE_PARTITION_LABEL
