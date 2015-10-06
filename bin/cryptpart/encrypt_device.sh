@@ -24,8 +24,11 @@ cryptdisks_stop $STORAGE_PARTITION_LABEL
 # noninteractive fdisk to partition the drive
 ./format_device.sh $STORAGE_DEVICE
 
+# mount key device
+mkdir -p $KEY_MOUNTPOINT
+mount $KEY_DEVICE $KEY_MOUNTPOINT
+
 # create key file
-# TODO: see where this should be done really and find a good place for the file
 dd if=/dev/urandom of=$KEYFILE bs=1024 count=4
 chmod 400 $KEYFILE
 
