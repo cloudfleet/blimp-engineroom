@@ -15,6 +15,10 @@ KEYFILE=$KEY_MOUNTPOINT/key
 # storage & swap
 STORAGE_PARTITION=$(readlink -e /dev/disk/by-label/${STORAGE_PARTITION_LABEL})
 STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
+if [ -z "$STORAGE_PARTITION" ]; then
+    # cf-str disappears from /dev/disk/by-label/ after it's formatted so we parse lsblk
+    STORAGE_DEVICE=$(lsblk | ./get_storage_device.py)
+fi
 SWAP_PARTITION=${STORAGE_DEVICE}1
 STORAGE_PARTITION=${STORAGE_DEVICE}2
 

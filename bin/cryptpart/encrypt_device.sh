@@ -23,7 +23,6 @@
 #  - btrfs 2 - http://unix.stackexchange.com/questions/190698/btrfs-mounting-a-subvolume-in-a-different-path-does-not-work-no-such-file-or
 
 # TODO:
-# - cf-str disappears from /dev/disk/by-label/ after it's formatted (check cryptsetup status or something)
 # - swap not mounted any more - check changes to mkswap
 
 DIR=$( cd "$( dirname $0 )" && pwd )
