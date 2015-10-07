@@ -68,6 +68,7 @@ def main(argv):
         result = parse_blk(fileinput.input())
     pprint.PrettyPrinter(indent=4).pprint(result)
     is_correct = check_correct(result)
+    print('is_correct: {}'.format(is_correct))
     sys.exit(int(not is_correct)) # appropriate exit code
 
 if __name__ == "__main__":
