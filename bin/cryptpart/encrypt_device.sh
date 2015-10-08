@@ -28,6 +28,16 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+if [ -z "$STORAGE_DEVICE" ]; then
+    tput setaf 1; echo "No storage device marked by partition label or LUKS partition label ${STORAGE_PARTITION_LABEL}. Quitting encryption."; tput sgr0
+    exit 1
+fi
+
+if [ -z "$KEY_PARTITION" ]; then
+    tput setaf 1; echo "No key partition marked by label ${KEY_PARTITION_LABEL}. Quitting encryption."; tput sgr0
+    exit 1
+fi
+
 # get partition name from lsblk automatically and check the partitions
 lsblk | python check_partitions.py
 

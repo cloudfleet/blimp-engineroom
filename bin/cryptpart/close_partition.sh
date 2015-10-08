@@ -6,12 +6,14 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 # disable swap
 swapoff -a
 
-# unmount the partition
-echo "unmounting the partition"
+# unmount the partitions
+echo "unmounting the partitions"
 umount $STORAGE_MOUNTPOINT
+umount $KEY_MOUNTPOINT
 
 # close the LUKS partition
 echo "closing the LUKS partition"
 cryptsetup close $STORAGE_PARTITION_LABEL
+cryptsetup close $SWAP_PARTITION_LABEL
 
 exit
