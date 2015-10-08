@@ -12,6 +12,8 @@ echo "====================================="
 echo "`date "+%F %T"`  Initializing config where necessary ... "
 echo "====================================="
 
+# check that USBs with correctly labeled partitions exist and if so prepare and encrypt key, storage, swap
+# (cd $DIR/cryptpart; ./encrypt_device.sh) # for when we flick the switch
 
 # docker-compose will be rendered in this folder
 mkdir -p /opt/cloudfleet/data/config/cache

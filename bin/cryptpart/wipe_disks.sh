@@ -5,6 +5,8 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+$DIR/close_partitions.sh
+
 hdd="/dev/sda /dev/sdb"
 for i in $hdd; do
     echo "d

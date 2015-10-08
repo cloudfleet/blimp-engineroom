@@ -6,8 +6,8 @@
 # This scrypt formats, encrypts and sets for auto-mounting of a USB storage and a USB key device.
 #
 # You need to provide two USBs that contain partitions with key and storage labels
-# from the set_partition_vars.sh script. Ideally, cf-key will be ext4 or similar,
-# so that we can set file permissions. FAT would work too.
+# from the set_partition_vars.sh script. Ideally, cf-key will be ext3, ext4 or similar,
+# so that we can set file permissions. FAT would work too, though.
 #
 # E.g.
 #
@@ -39,7 +39,7 @@ if [ -z "$KEY_PARTITION" ]; then
 fi
 
 # get partition name from lsblk automatically and check the partitions
-lsblk | python check_partitions.py
+lsblk | $DIR/check_partitions.py
 
 if [ $? -eq 0 ]; then
     echo "Partitions already encrypted. Not formatting"
@@ -49,11 +49,10 @@ fi
 echo "Partitions not encrypted. Formatting now!"
 
 # make sure the partition isn't already mounted
-./close_partition.sh
-cryptdisks_stop $STORAGE_PARTITION_LABEL
+$DIR/close_partition.sh
 
 # noninteractive fdisk to partition the drive
-./format_device.sh $STORAGE_DEVICE
+$DIR/format_device.sh $STORAGE_DEVICE
 
 # mount key device
 mkdir -p $KEY_MOUNTPOINT
@@ -80,18 +79,20 @@ mkswap $SWAP_PARTITION
 apt-get install btrfs-tools # only once somewhere
 mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
-# start using the swap
-#swapon $SWAP_MAPPED_DEVICE
+# exit # early for debug purposes
 
 # mount the storage partition
 mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
 # - decrypt and mount automatically on boot
-./write_crypttab.sh
+$DIR/write_crypttab.sh
 cryptdisks_start $SWAP_PARTITION_LABEL
 cryptdisks_start $STORAGE_PARTITION_LABEL
-./write_fstab.sh
+$DIR/write_fstab.sh
 mount -a
+
+# start using the swap
+swapon $SWAP_MAPPED_DEVICE
 
 exit

@@ -21,4 +21,4 @@ mkdir -p $STORAGE_MOUNTPOINT
 cp /etc/fstab.original /etc/fstab
 echo "${KEY_PARTITION} ${KEY_MOUNTPOINT} auto defaults 0 0
 ${SWAP_MAPPED_DEVICE} none swap pri=1,defaults 0 0
-${STORAGE_MAPPED_DEVICE} $STORAGE_MOUNTPOINT btrfs" >> /etc/fstab
+${STORAGE_MAPPED_DEVICE} ${STORAGE_MOUNTPOINT} btrfs" >> /etc/fstab
