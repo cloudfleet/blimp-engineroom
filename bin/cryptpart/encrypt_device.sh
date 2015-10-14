@@ -95,4 +95,6 @@ mount -a
 # start using the swap
 swapon $SWAP_MAPPED_DEVICE
 
+$DIR/create_btrfs_partitions.sh
+
 exit
