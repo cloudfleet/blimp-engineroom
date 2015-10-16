@@ -5,7 +5,7 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
-$DIR/close_partitions.sh
+$DIR/close_partition.sh
 
 function wipe_drives(){
     hdd="/dev/sda /dev/sdb"
@@ -28,7 +28,7 @@ w
     mkfs.ext3 /dev/sdb1 -L ${KEY_PARTITION_LABEL}
 }
 
-#wipe_drives
+wipe_drives
 
 # revert fstab, crypttab
 
@@ -42,4 +42,7 @@ else
     :
 fi
 
-mv /etc/crypttab /etc/crypttab.backup
+if [ -f /etc/crypttab ]; then
+    mv /etc/crypttab /etc/crypttab.backup
+fi
+

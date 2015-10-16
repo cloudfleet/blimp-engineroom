@@ -26,7 +26,7 @@ if [ -z "$STORAGE_PARTITION" ]; then
     cryptdisks_start $SWAP_PARTITION_LABEL
     cryptdisks_start $STORAGE_PARTITION_LABEL
     # - cf-str disappears from /dev/disk/by-label/ after it's formatted so we parse lsblk
-    STORAGE_DEVICE=$(lsblk | $DIR/get_storage_device.py)
+    STORAGE_DEVICE=/dev/$(lsblk | $DIR/get_storage_device.py)
 else
     # there is a labeled partition, so we extract device name from it (assuming single digit)
     STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
