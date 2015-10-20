@@ -25,6 +25,10 @@
 # TODO:
 # - swap not mounted any more - check changes to mkswap
 
+echo "====================================="
+echo "`date "+%F %T"`  Encrypting storage if necessary & possible ... "
+echo "====================================="
+
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 

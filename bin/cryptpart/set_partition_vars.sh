@@ -12,10 +12,10 @@ echo "labels: ${KEY_PARTITION_LABEL}, ${SWAP_PARTITION_LABEL}, ${STORAGE_PARTITI
 BASE_MOUNTPOINT=/mnt
 
 # data paths
-CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data2
-#CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data
-DOCKER_DATA_PATH=/opt/cloudfleet/docker2
-#DOCKER_DATA_PATH=/var/lib/docker
+#CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data2
+CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data
+#DOCKER_DATA_PATH=/opt/cloudfleet/docker2
+DOCKER_DATA_PATH=/var/lib/docker
 
 # key
 KEY_PARTITION=/dev/disk/by-label/${KEY_PARTITION_LABEL}
