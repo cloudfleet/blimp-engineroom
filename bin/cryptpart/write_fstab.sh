@@ -21,4 +21,6 @@ mkdir -p $STORAGE_MOUNTPOINT
 cp /etc/fstab.original /etc/fstab
 echo "${KEY_PARTITION} ${KEY_MOUNTPOINT} auto defaults 0 0
 ${SWAP_MAPPED_DEVICE} none swap pri=1,defaults 0 0
-${STORAGE_MAPPED_DEVICE} ${STORAGE_MOUNTPOINT} btrfs" >> /etc/fstab
+${STORAGE_MAPPED_DEVICE} ${STORAGE_MOUNTPOINT} btrfs
+${STORAGE_MAPPED_DEVICE} ${CLOUDFLEET_DATA_PATH} btrfs defaults,subvol=data 0 0
+${STORAGE_MAPPED_DEVICE} ${DOCKER_DATA_PATH} btrfs defaults,subvol=docker 0 0" >> /etc/fstab

@@ -92,10 +92,6 @@ cryptdisks_start $STORAGE_PARTITION_LABEL
 $DIR/write_fstab.sh
 mount -a
 
-
-# once again with correct variable names
-# $DIR/write_crypttab.sh
-
 # start using the swap
 swapon $SWAP_MAPPED_DEVICE
 
