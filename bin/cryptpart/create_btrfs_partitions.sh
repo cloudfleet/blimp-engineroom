@@ -17,12 +17,16 @@ service docker stop
 
 
 # if paths exist, move their contents to a /tmp folder
+rm -rf /tmp/cf-data
+rm -rf /tmp/docker-data
+mkdir -p /tmp/cf-data/
+mkdir -p /tmp/docker-data/
 if [ -d $CLOUDFLEET_DATA_PATH ] ; then
-    mkdir -p /tmp/cf-data
+    mv ${CLOUDFLEET_DATA_PATH}/* /tmp/cf-data/
 fi
 
 if [ -d $DOCKER_DATA_PATH ] ; then
-    mkdir -p /tmp/docker-data
+    mv ${DOCKER_DATA_PATH}/* /tmp/docker-data/
 fi
 
 # create paths if they don't exist
@@ -37,10 +41,17 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# move data back
+mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
+mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
+
 # remove temporary folders
 rm -rf /tmp/cf-data
 rm -rf /tmp/docker-data
 
+# set permissions
+chmod 700 ${CLOUDFLEET_DATA_PATH}
+chmod 700 ${DOCKER_DATA_PATH}
 
 # resume docker
 service docker restart
