@@ -3,6 +3,15 @@
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
+# first unmount and delete any btrfs subvolumes
+# - stop docker if it's using /var/lib/docker
+service docker stop
+# - unmount btrfs subvolumes
+umount ${CLOUDFLEET_DATA_PATH}
+umount ${DOCKER_DATA_PATH}
+
+# then close the bare partitions...
+
 # disable swap
 swapoff -a
 

@@ -7,6 +7,10 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 
 $DIR/close_partition.sh
 
+# delete btrfs subvolumes
+btrfs subvolume delete ${STORAGE_MOUNTPOINT}/data
+btrfs subvolume delete ${STORAGE_MOUNTPOINT}/docker
+
 function wipe_drives(){
     hdd="/dev/sda /dev/sdb"
     for i in $hdd; do
