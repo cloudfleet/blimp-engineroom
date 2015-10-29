@@ -23,9 +23,9 @@
 #  - btrfs 2 - http://unix.stackexchange.com/questions/190698/btrfs-mounting-a-subvolume-in-a-different-path-does-not-work-no-such-file-or
 
 # TODO:
-# - /var/lib/docker too long - skip it
 # - retry
-# - debug reboot
+# - name devices by uuid, not by sda/sdb in fstab (blkid /dev/sda1)
+# - mount key before running /etc/crypttab
 
 echo "====================================="
 echo "`date "+%F %T"`  Encrypting storage if necessary & possible ... "

@@ -18,8 +18,9 @@ CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data
 DOCKER_DATA_PATH=/var/lib/docker
 
 # key
+# - we keep the label pointer, as sda/sdb might change after reboot
 KEY_PARTITION=/dev/disk/by-label/${KEY_PARTITION_LABEL}
-KEY_PARTITION=$(readlink -e ${KEY_PARTITION}) # render to real partition
+# KEY_PARTITION=$(readlink -e ${KEY_PARTITION}) # render to real partition
 KEY_MOUNTPOINT=${BASE_MOUNTPOINT}/storage-key
 KEYFILE=$KEY_MOUNTPOINT/key
 echo "key: ${KEY_PARTITION}, ${KEY_MOUNTPOINT}"
