@@ -4,7 +4,8 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
 
 # open partiotion
-cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL
+echo "cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE"
+cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
 
 # start using the swap
 swapon $SWAP_MAPPED_DEVICE

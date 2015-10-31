@@ -33,6 +33,7 @@ echo "====================================="
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
+# -> after this first run, we expect $STORAGE_DEVICE to be something like "/dev/sda" or ""
 
 if [ -z "$STORAGE_DEVICE" ]; then
     tput setaf 1; echo "No storage device marked by partition label or LUKS partition label ${STORAGE_PARTITION_LABEL}. Quitting encryption."; tput sgr0
@@ -92,6 +93,7 @@ mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
 # - decrypt and mount automatically on boot
+# TODO: parse the UUIDs, write them to crypttab and use UUIDs from now on
 $DIR/write_crypttab.sh
 cryptdisks_start $SWAP_PARTITION_LABEL
 cryptdisks_start $STORAGE_PARTITION_LABEL
