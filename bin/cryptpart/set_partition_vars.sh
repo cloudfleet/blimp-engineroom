@@ -4,7 +4,11 @@
 # Since LUKS devices can't have labels, but only the decrypted mapped devices,
 # some convoluted approaches are necessary to make this yield the correct output.
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+if [ $0 == "-bash" ]; then
+    DIR=.
+else
+    DIR=$( cd "$( dirname $0 )" && pwd )
+fi
 
 # constants
 #----------
@@ -40,13 +44,18 @@ echo "key: ${KEY_PARTITION}, ${KEY_MOUNTPOINT}"
 STORAGE_PARTITION=$(readlink -e /dev/disk/by-label/${STORAGE_PARTITION_LABEL})
 # - but it can happen that there is no label because an encrypted LUKS device can't have a label
 if [ -z "$STORAGE_PARTITION" ]; then
-    # TODO: this shouldn't call cryptdisks_start - it should just parse /etc/crypttab
-    # no storage partition label on any of the partitions, try crypt
-    # - first attempt to open the partitions (otherwise we won't be able to read their labels)
-    cryptdisks_start $SWAP_PARTITION_LABEL
-    cryptdisks_start $STORAGE_PARTITION_LABEL
-    # - cf-str disappears from /dev/disk/by-label/ after it's formatted so we parse lsblk
-    STORAGE_DEVICE=/dev/$(lsblk | $DIR/get_storage_device.py)
+    # no storage partition label on any of the partitions, try crypt partitions
+    # - we parse /etc/crypttab to get the partitions
+    STORAGE_PARTITION=$($DIR/get_crypttab_device.py $STORAGE_PARTITION_LABEL)
+    SWAP_PARTITION=$($DIR/get_crypttab_device.py $SWAP_PARTITION_LABEL)
+    # there is a labeled partition, so we extract device name from it (assuming single digit)
+    STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
+    # old approach of also mounting crypttab
+    # # - first attempt to open the partitions (otherwise we won't be able to read their labels)
+    # cryptdisks_start $SWAP_PARTITION_LABEL
+    # cryptdisks_start $STORAGE_PARTITION_LABEL
+    # # - cf-str disappears from /dev/disk/by-label/ after it's formatted so we parse lsblk
+    # STORAGE_DEVICE=/dev/$(lsblk | $DIR/get_storage_device.py)
 else
     # there is a labeled partition, so we extract device name from it (assuming single digit)
     STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
@@ -57,8 +66,12 @@ if [ -z "$STORAGE_DEVICE" ]; then
     echo "there is no ${STORAGE_OARTITION} label - on crypt or on actual partition"
 else
     # determine the partitions (that will be or already are created)
-    SWAP_PARTITION="${STORAGE_DEVICE}1"
-    STORAGE_PARTITION="${STORAGE_DEVICE}2"
+    if [ -z "$SWAP_PARTITION" ]; then
+	SWAP_PARTITION="${STORAGE_DEVICE}1"
+    fi
+    if [ -z "$STORAGE_PARTITION" ]; then
+	STORAGE_PARTITION="${STORAGE_DEVICE}2"
+    fi
 fi
 
 SWAP_MAPPED_DEVICE=/dev/mapper/$SWAP_PARTITION_LABEL
