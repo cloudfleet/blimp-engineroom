@@ -34,7 +34,8 @@ DOCKER_DATA_PATH=/var/lib/docker
 KEY_PARTITION=/dev/disk/by-label/${KEY_PARTITION_LABEL}
 # KEY_PARTITION=$(readlink -e ${KEY_PARTITION}) # render to real partition
 KEY_MOUNTPOINT=${BASE_MOUNTPOINT}/storage-key
-KEYFILE=$KEY_MOUNTPOINT/key
+#KEYFILE=$KEY_MOUNTPOINT/key
+KEYFILE=/root/key
 echo "key: ${KEY_PARTITION}, ${KEY_MOUNTPOINT}"
 
 # storage & swap

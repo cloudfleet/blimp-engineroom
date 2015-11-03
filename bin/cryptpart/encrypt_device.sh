@@ -17,6 +17,7 @@
 #
 # sources:
 #  - storage - http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
+#  - batch mode - https://github.com/debops-contrib/ansible-cryptsetup
 #  - swap - https://help.ubuntu.com/community/EncryptedFilesystemHowto3
 #  - swap 2 - http://unix.stackexchange.com/questions/64551/how-do-i-set-up-an-encrypted-swap-file-in-linux
 #  - btrfs - https://wiki.archlinux.org/index.php/Btrfs
@@ -24,7 +25,8 @@
 
 # TODO:
 # - retry
-# - name devices by uuid, not by sda/sdb in fstab (blkid /dev/sda1)
+# - find out why storing key on USB doesn't work
+#   https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#With_a_keyfile_stored_on_an_external_media
 # - mount key before running /etc/crypttab
 
 echo "====================================="
@@ -81,7 +83,9 @@ chmod 400 $KEYFILE
 
 # encrypt storage partition
 echo " - encrypt storage partition"
-cryptsetup --verbose luksFormat $STORAGE_PARTITION - < $KEYFILE
+# this seems to be wrong - maybe it's interpreted as a passphrase
+#cryptsetup --verbose luksFormat $STORAGE_PARTITION - < $KEYFILE
+cryptsetup --batch-mode --verbose luksFormat --key-file $KEYFILE $STORAGE_PARTITION
 
 # fill swap with 0s - takes ages & not sure if necessary in our case
 # dd if=/dev/zero bs=1024000 of=$SWAP_PARTITION
@@ -89,6 +93,9 @@ cryptsetup --verbose luksFormat $STORAGE_PARTITION - < $KEYFILE
 # open partiotion (for elsewhere)
 echo " - open encrypted storage partition"
 cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
+
+#echo " - add key once again"
+#cryptsetup luksAddKey $STORAGE_PARTITION $KEYFILE
 
 # format the swap
 echo " - format the swap"
@@ -105,7 +112,7 @@ mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 mkdir -p $STORAGE_MOUNTPOINT
 mount -t btrfs $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
-# convert devices to UUIDs before writing fstab/crypttab
+# convert devices to UUIDs, not sda/sdb before writing fstab/crypttab
 echo " - get partitions as UUIDs"
 SWAP_PARTITION_UUID=/dev/disk/by-uuid/$(blkid -s UUID -o value $SWAP_PARTITION)
 echo $SWAP_PARTITION $SWAP_PARTITION_UUID
@@ -129,5 +136,7 @@ mount -a
 swapon $SWAP_MAPPED_DEVICE
 
 $DIR/create_btrfs_partitions.sh
+
+echo "complete"
 
 exit

@@ -22,7 +22,9 @@ umount $KEY_MOUNTPOINT
 
 # close the LUKS partition
 echo "closing the LUKS partition"
-cryptsetup close $STORAGE_PARTITION_LABEL
-cryptsetup close $SWAP_PARTITION_LABEL
+#cryptsetup close $STORAGE_PARTITION_LABEL
+#cryptsetup close $SWAP_PARTITION_LABEL
+cryptdisks_stop $STORAGE_PARTITION_LABEL
+cryptdisks_stop $SWAP_PARTITION_LABEL
 
 exit
