@@ -28,8 +28,10 @@ p
 w
 " | fdisk $i; done
 
-    mkfs.ext3 /dev/sda1 -L ${STORAGE_PARTITION_LABEL}
-    mkfs.ext3 /dev/sdb1 -L ${KEY_PARTITION_LABEL}
+    mkfs.vfat /dev/sda1 -n ${STORAGE_PARTITION_LABEL}
+    mkfs.vfat /dev/sdb1 -n ${KEY_PARTITION_LABEL}
+    # mkfs.ext3 /dev/sda1 -L ${STORAGE_PARTITION_LABEL}
+    # mkfs.ext3 /dev/sdb1 -L ${KEY_PARTITION_LABEL}
 }
 
 wipe_drives

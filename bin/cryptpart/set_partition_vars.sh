@@ -40,7 +40,7 @@ echo "key: ${KEY_PARTITION}, ${KEY_MOUNTPOINT}"
 # storage & swap
 #---------------
 # - these ones are tricky
-# - we first try t ocheck if there is a label
+# - we first try to check if there is a label
 STORAGE_PARTITION=$(readlink -e /dev/disk/by-label/${STORAGE_PARTITION_LABEL})
 # - but it can happen that there is no label because an encrypted LUKS device can't have a label
 if [ -z "$STORAGE_PARTITION" ]; then
@@ -48,8 +48,12 @@ if [ -z "$STORAGE_PARTITION" ]; then
     # - we parse /etc/crypttab to get the partitions
     STORAGE_PARTITION=$($DIR/get_crypttab_device.py $STORAGE_PARTITION_LABEL)
     SWAP_PARTITION=$($DIR/get_crypttab_device.py $SWAP_PARTITION_LABEL)
-    # there is a labeled partition, so we extract device name from it (assuming single digit)
-    STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
+    # if there is no crypttab or that label, get_crypttab_device.py will return 1 and leave var unset
+    if [ ! -z "$STORAGE_PARTITION" ]; then
+	# there is a labeled partition, so we extract device name from it (assuming single digit)
+	# TODO: a more robust method will be needed to determine the device after we switch to UUIDs
+	STORAGE_DEVICE=${STORAGE_PARTITION:0:(-1)}
+    fi
     # old approach of also mounting crypttab
     # # - first attempt to open the partitions (otherwise we won't be able to read their labels)
     # cryptdisks_start $SWAP_PARTITION_LABEL
@@ -63,7 +67,7 @@ fi
 
 if [ -z "$STORAGE_DEVICE" ]; then
     # still no storage device
-    echo "there is no ${STORAGE_OARTITION} label - on crypt or on actual partition"
+    echo "there is no ${STORAGE_PARTITION_LABEL} label - on crypt or on actual partition"
 else
     # determine the partitions (that will be or already are created)
     if [ -z "$SWAP_PARTITION" ]; then

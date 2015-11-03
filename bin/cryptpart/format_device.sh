@@ -8,7 +8,11 @@ fi
 #hdd="/dev/sda"
 hdd=$1
 
-# for actually not needed, but we could format multiple devices with hdd="/dev/sda /dev/sdb"
+# format using fdisk
+# (for loop not needed, but we could format multiple devices with hdd="/dev/sda /dev/sdb")
+# - delete up to 3 existing partitions
+# - create a 2 GB primary partition (swap)
+# - fill up the remaining empty space with the second partition (storage)
 for i in $hdd;do
     echo "d
 1

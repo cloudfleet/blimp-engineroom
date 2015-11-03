@@ -19,5 +19,3 @@ def parse():
             }
             devices.append(device)
         return devices
-
-parse()
