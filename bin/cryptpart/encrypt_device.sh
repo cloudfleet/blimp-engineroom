@@ -24,10 +24,11 @@
 #  - btrfs 2 - http://unix.stackexchange.com/questions/190698/btrfs-mounting-a-subvolume-in-a-different-path-does-not-work-no-such-file-or
 
 # TODO:
-# - retry
 # - find out why storing key on USB doesn't work
 #   https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#With_a_keyfile_stored_on_an_external_media
 # - mount key before running /etc/crypttab
+# - automatically add missing kernel module on Cubox
+# - retry from a clean state & see that it works after reboot
 
 echo "====================================="
 echo "`date "+%F %T"`  Encrypting storage if necessary & possible ... "
@@ -124,7 +125,6 @@ echo $STORAGE_PARTITION $STORAGE_PARTITION_UUID
 
 # decrypt and mount automatically on boot
 echo " - write crypttab"
-# TODO: parse the UUIDs, write them to crypttab and use UUIDs from now on
 $DIR/write_crypttab.sh $SWAP_PARTITION_BY_LABEL $STORAGE_PARTITION_UUID
 echo " - open encrypted devices using crypttab"
 cryptdisks_start $SWAP_PARTITION_LABEL
