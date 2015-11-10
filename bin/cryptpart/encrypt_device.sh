@@ -120,13 +120,13 @@ echo " - get partitions as UUIDs/labels"
 #SWAP_PARTITION_BY_LABEL=/dev/disk/by-label/${SWAP_PARTITION_LABEL}
 SWAP_PARTITION_BY_ID=$(./get_part_id.py $SWAP_PARTITION)
 echo $SWAP_PARTITION $SWAP_PARTITION_BY_ID
-STORAGE_PARTITION_UUID=/dev/disk/by-uuid/$(blkid -s UUID -o value $STORAGE_PARTITION)
-#STORAGE_PARTITION_UUID=/dev/disk/by-uuid/$(cryptsetup luksUUID $STORAGE_PARTITION)
-echo $STORAGE_PARTITION $STORAGE_PARTITION_UUID
+STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(blkid -s UUID -o value $STORAGE_PARTITION)
+#STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(cryptsetup luksUUID $STORAGE_PARTITION)
+echo $STORAGE_PARTITION $STORAGE_PARTITION_BY_UUID
 
 # decrypt and mount automatically on boot
 echo " - write crypttab"
-$DIR/write_crypttab.sh $SWAP_PARTITION_BY_ID $STORAGE_PARTITION_UUID
+$DIR/write_crypttab.sh $SWAP_PARTITION_BY_ID $STORAGE_PARTITION_BY_UUID
 echo " - open encrypted devices using crypttab"
 cryptdisks_start $SWAP_PARTITION_LABEL
 cryptdisks_start $STORAGE_PARTITION_LABEL
