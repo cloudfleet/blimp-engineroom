@@ -22,7 +22,6 @@ def main():
     name = sys.argv[1].split('/')[2]
     output = subprocess.check_output('/bin/ls -l /dev/disk/by-id/*', shell=True)
     for line in output.split('\n'):
-        print(line)
         if len(line.rstrip()) > 0:
             without_date = line.split('/dev/disk/by-id/')[1]
             partid, partname = without_date.split(' -> ../../')
