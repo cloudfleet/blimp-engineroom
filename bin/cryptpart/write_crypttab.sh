@@ -10,7 +10,7 @@ if [ "$#" -eq 2 ]; then
     echo "getting partitions from arguments"
     SWAP_PARTITION=$1
     STORAGE_PARTITION=$2
-
+    # keyscript option makes sure the key is mounted before accessing it
     echo "# <target name> <source device> <key file> <options>
 ${SWAP_PARTITION_LABEL} ${SWAP_PARTITION} /dev/urandom swap,cipher=aes-cbc-essiv:sha256,size=256
 ${STORAGE_PARTITION_LABEL} ${STORAGE_PARTITION} ${KEY_PARTITION} luks,keyscript=/opt/cloudfleet/engineroom/bin/cryptpart/keyscript.sh

@@ -16,18 +16,30 @@
 #
 #
 # sources:
+#
 #  - storage - http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
 #  - batch mode - https://github.com/debops-contrib/ansible-cryptsetup
 #  - swap - https://help.ubuntu.com/community/EncryptedFilesystemHowto3
 #  - swap 2 - http://unix.stackexchange.com/questions/64551/how-do-i-set-up-an-encrypted-swap-file-in-linux
 #  - btrfs - https://wiki.archlinux.org/index.php/Btrfs
 #  - btrfs 2 - http://unix.stackexchange.com/questions/190698/btrfs-mounting-a-subvolume-in-a-different-path-does-not-work-no-such-file-or
+#  - key on external device & keyscripts
+#    - http://stackoverflow.com/questions/19713918/how-to-load-luks-passphrase-from-usb-falling-back-to-keyboard
+#    - http://binblog.info/2008/12/04/using-a-usb-key-for-the-luks-passphrase/
+#    - http://www.gaztronics.net/howtos/luks.php
+#    - http://possiblelossofprecision.net/?p=300
+#    - http://www.oxygenimpaired.com/debian-lenny-luks-encrypted-root-hidden-usb-keyfile
+#  - some Arch wiki ground knowledge on the topic:
+#    - https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
+#    - https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#With_a_keyfile_stored_on_an_external_media
+#    - https://wiki.archlinux.org/index.php/Persistent_block_device_naming
+
 
 # TODO:
-# - find out why storing key on USB doesn't work
-#   https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#With_a_keyfile_stored_on_an_external_media
-# - mount key before running /etc/crypttab
+#
+# - make wipe_disks.sh script nicer, to prepare it for outside usage
 # - automatically add missing kernel module on Cubox
+# - make sure /mnt/storage-key is unmounted sometime after boot normally & additionally after this script
 # - retry from a clean state & see that it works after reboot
 
 echo "====================================="

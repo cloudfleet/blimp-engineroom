@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # keyscript called from /etc/crypttab to mount the key USB and echo the key
+# make sure the key is mounted before accessing it
+#
 # usage:
 # ./keyscript.sh <key_partition>
 
