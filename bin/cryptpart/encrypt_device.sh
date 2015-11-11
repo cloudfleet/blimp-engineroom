@@ -29,6 +29,8 @@
 #    - http://www.gaztronics.net/howtos/luks.php
 #    - http://possiblelossofprecision.net/?p=300
 #    - http://www.oxygenimpaired.com/debian-lenny-luks-encrypted-root-hidden-usb-keyfile
+#  - keyscript workaround for Systemd
+#    - http://gw.tnode.com/debian/issues-and-workarounds-for-debian-8/
 #  - some Arch wiki ground knowledge on the topic:
 #    - https://wiki.archlinux.org/index.php/Dm-crypt/Swap_encryption
 #    - https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#With_a_keyfile_stored_on_an_external_media
@@ -37,6 +39,7 @@
 
 # TODO:
 #
+# - systemd doesn't support keyscript in Jessie :( Find alternative.
 # - make wipe_disks.sh script nicer, to prepare it for outside usage
 # - automatically add missing kernel module on Cubox
 # - make sure /mnt/storage-key is unmounted sometime after boot normally & additionally after this script
