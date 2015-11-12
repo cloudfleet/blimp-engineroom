@@ -11,9 +11,12 @@ if [ "$#" -eq 2 ]; then
     SWAP_PARTITION=$1
     STORAGE_PARTITION=$2
     # keyscript option makes sure the key is mounted before accessing it
+    # noauto only necessary because systemd doesn't recognise keyscript
+    # we decrypt partitions on a crontab @reboot in crypttab_startup.sh
+    # (not really needed on the Cubox)
     echo "# <target name> <source device> <key file> <options>
 ${SWAP_PARTITION_LABEL} ${SWAP_PARTITION} /dev/urandom swap,cipher=aes-cbc-essiv:sha256,size=256
-${STORAGE_PARTITION_LABEL} ${STORAGE_PARTITION} ${KEY_PARTITION} luks,keyscript=/opt/cloudfleet/engineroom/bin/cryptpart/keyscript.sh
+${STORAGE_PARTITION_LABEL} ${STORAGE_PARTITION} ${KEY_PARTITION} luks,noauto,keyscript=/opt/cloudfleet/engineroom/bin/cryptpart/keyscript.sh
 " > /etc/crypttab
 else
     # this scenario is not need, except for testing
