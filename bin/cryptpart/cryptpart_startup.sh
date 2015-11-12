@@ -6,17 +6,23 @@
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 
-# if nothing in cryptpart leave (VMs or devices with no storage/key devices)
+# if no cryptpart-ready devices, leave (VMs or devices with no storage/key devices)
+. $DIR/set_partition_vars.sh
+if [ -z "$KEY_PARTITION" ]; then
+    tput setaf 1; echo "No key partition marked by label ${KEY_PARTITION_LABEL}. Quitting cryptpart_startup."; tput sgr0
+    exit 1
+fi
+if [ -z "$STORAGE_DEVICE" ]; then
+    tput setaf 1; echo "No storage device marked by partition label or LUKS partition label ${STORAGE_PARTITION_LABEL}. Quitting cryptpart_startup."; tput sgr0
+    exit 1
+fi
 
-# just in case its autostart wasn't disabled
+# just in case docker's autostart wasn't disabled
 service docker stop
 
 # open encrypted partitions
 $DIR/open_partition.sh
 
 service docker start
-
-# now start the usual engineroom drill
-# TODO: blimp-upgrade.sh with log
 
 exit

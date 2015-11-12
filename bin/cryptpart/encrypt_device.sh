@@ -14,7 +14,6 @@
 # USB 1 - 1 partition labeled cf-str
 # USB 2 - 1 partition labeled cf-key
 #
-#
 # sources:
 #
 #  - storage - http://xmodulo.com/how-to-create-encrypted-disk-partition-on-linux.html
@@ -39,7 +38,6 @@
 
 # TODO:
 #
-# - systemd doesn't support keyscript in Jessie :( Find alternative.
 # - make initial disk labels uppercase for better Win support
 # - automatically add missing kernel module on Cubox
 # - make sure /mnt/storage-key is unmounted sometime after boot normally & additionally after this script
@@ -77,6 +75,10 @@ echo "Partitions not encrypted. Formatting now!"
 # make sure the partition isn't already mounted
 echo " - close partitions"
 $DIR/close_partition.sh
+
+# disable automatic docker service starting
+# (necessary because systemd doesn't parse keyscript)
+systemctl disable docker.service
 
 # noninteractive fdisk to partition the drive
 echo " - format device"

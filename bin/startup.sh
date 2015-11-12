@@ -9,6 +9,6 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 $DIR/cryptpart/cryptpart_startup.sh
 
 # now start the usual engineroom drill
-# TODO: blimp-upgrade.sh with log
+/opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
 
 exit
