@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# wipe sda and sdb devices and label them
+# ./wipe_disks.sh <key device> <storage device>
+# default: key=/dev/sdb, storage=/dev/sda
+# wipe key and storage devices and label them
+# depends:
+#     apt-get install dosfstools
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
@@ -11,8 +15,21 @@ $DIR/close_partition.sh
 btrfs subvolume delete ${STORAGE_MOUNTPOINT}/data
 btrfs subvolume delete ${STORAGE_MOUNTPOINT}/docker
 
+
+if [ -z "$1" ]; then
+    KEY_DEVICE=$1
+else
+    KEY_DEVICE=/dev/sdb
+fi
+
+if [ -z "$2" ]; then
+    STORAGE_DEVICE=$2
+else
+    STORAGE_DEVICE=/dev/sda
+fi
+
 function wipe_drives(){
-    hdd="/dev/sda /dev/sdb"
+    hdd="$STORAGE_DEVICE $KEY_DEVICE"
     for i in $hdd; do
 	echo "d
 1
@@ -28,10 +45,10 @@ p
 w
 " | fdisk $i; done
 
-    mkfs.vfat /dev/sda1 -n ${STORAGE_PARTITION_LABEL}
-    mkfs.vfat /dev/sdb1 -n ${KEY_PARTITION_LABEL}
-    # mkfs.ext3 /dev/sda1 -L ${STORAGE_PARTITION_LABEL}
-    # mkfs.ext3 /dev/sdb1 -L ${KEY_PARTITION_LABEL}
+    mkfs.vfat ${STORAGE_DEVICE}1 -n ${STORAGE_PARTITION_LABEL}
+    mkfs.vfat ${KEY_DEVICE}1 -n ${KEY_PARTITION_LABEL}
+    # mkfs.ext3 ${STORAGE_DEVICE}1 -L ${STORAGE_PARTITION_LABEL}
+    # mkfs.ext3 ${KEY_DEVICE}1 -L ${KEY_PARTITION_LABEL}
 }
 
 wipe_drives

@@ -40,7 +40,7 @@
 # TODO:
 #
 # - systemd doesn't support keyscript in Jessie :( Find alternative.
-# - make wipe_disks.sh script nicer, to prepare it for outside usage
+# - make initial disk labels uppercase for better Win support
 # - automatically add missing kernel module on Cubox
 # - make sure /mnt/storage-key is unmounted sometime after boot normally & additionally after this script
 # - retry from a clean state & see that it works after reboot
