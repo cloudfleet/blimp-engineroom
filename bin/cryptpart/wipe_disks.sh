@@ -17,16 +17,18 @@ btrfs subvolume delete ${STORAGE_MOUNTPOINT}/docker
 
 
 if [ -z "$1" ]; then
-    KEY_DEVICE=$1
+    KEY_DEVICE="/dev/sdb"
 else
-    KEY_DEVICE=/dev/sdb
+    KEY_DEVICE=$1
 fi
+echo "key device is ${KEY_DEVICE}"
 
 if [ -z "$2" ]; then
-    STORAGE_DEVICE=$2
+    STORAGE_DEVICE="/dev/sda"
 else
-    STORAGE_DEVICE=/dev/sda
+    STORAGE_DEVICE=$2
 fi
+echo "storage device is ${STORAGE_DEVICE}"
 
 function wipe_drives(){
     hdd="$STORAGE_DEVICE $KEY_DEVICE"
