@@ -28,7 +28,7 @@ cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
 $DIR/create-crontab.sh
 
-CLOUDFLEET_OTP=$(ip addr | grep -1 eth0: | tail -1 | awk '{print $2}' | sed s/://g)
+CLOUDFLEET_OTP=$($DIR/get_otp.sh)
 
 mkdir -p /opt/cloudfleet/data/shared/tls
 cp $DIR/../templates/group16.pem /opt/cloudfleet/data/shared/tls/dhparams.pem
