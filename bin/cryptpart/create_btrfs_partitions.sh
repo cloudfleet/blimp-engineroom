@@ -56,6 +56,9 @@ rm -rf /tmp/cf-data
 chmod 700 ${CLOUDFLEET_DATA_PATH}
 chmod 700 ${DOCKER_DATA_PATH}
 
+# write the new docker sysv/upstart/systemd options that use btrfs
+$DIR/write_docker_opts.sh
+
 # resume docker
 service docker restart
 
