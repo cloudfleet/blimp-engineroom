@@ -3,8 +3,6 @@
 # ./wipe_disks.sh <key device> <storage device>
 # default: key=/dev/sdb, storage=/dev/sda
 # wipe key and storage devices and label them
-# depends:
-#     apt-get install dosfstools
 
 DIR=$( cd "$( dirname $0 )" && pwd )
 . $DIR/set_partition_vars.sh
@@ -30,6 +28,10 @@ else
 fi
 echo "storage device is ${STORAGE_DEVICE}"
 
+# unmount all partitions on the devices
+for n in $STORAGE_DEVICE* ; do umount $n ; done
+for n in $KEY_DEVICE* ; do umount $n ; done
+
 function wipe_drives(){
     hdd="$STORAGE_DEVICE $KEY_DEVICE"
     for i in $hdd; do
@@ -47,10 +49,12 @@ p
 w
 " | fdisk $i; done
 
-    mkfs.vfat ${STORAGE_DEVICE}1 -n ${STORAGE_PARTITION_LABEL}
-    mkfs.vfat ${KEY_DEVICE}1 -n ${KEY_PARTITION_LABEL}
-    # mkfs.ext3 ${STORAGE_DEVICE}1 -L ${STORAGE_PARTITION_LABEL}
-    # mkfs.ext3 ${KEY_DEVICE}1 -L ${KEY_PARTITION_LABEL}
+    # if using FAT32:
+    #     apt-get install dosfstools
+    # mkfs.vfat ${STORAGE_DEVICE}1 -n ${STORAGE_PARTITION_LABEL}
+    # mkfs.vfat ${KEY_DEVICE}1 -n ${KEY_PARTITION_LABEL}
+    mkfs.ext3 ${STORAGE_DEVICE}1 -L ${STORAGE_PARTITION_LABEL}
+    mkfs.ext3 ${KEY_DEVICE}1 -L ${KEY_PARTITION_LABEL}
 }
 
 wipe_drives
