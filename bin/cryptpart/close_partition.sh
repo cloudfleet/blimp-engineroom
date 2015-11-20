@@ -27,4 +27,8 @@ echo "closing the LUKS partition"
 cryptdisks_stop $STORAGE_PARTITION_LABEL
 cryptdisks_stop $SWAP_PARTITION_LABEL
 
+# once again, in case the crypttab doesn't have the right settings
+cryptsetup luksClose /dev/mapper/$STORAGE_PARTITION_LABEL
+cryptsetup luksClose /dev/mapper/$SWAP_PARTITION_LABEL
+
 exit
