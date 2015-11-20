@@ -49,6 +49,10 @@ echo "====================================="
 
 echo " - set variables (we only care about the device here - partitions will be wrong)"
 DIR=$( cd "$( dirname $0 )" && pwd )
+
+echo "Installing cryptsetup"
+apt-get -y install cryptsetup
+
 . $DIR/set_partition_vars.sh
 # -> after this first run, we expect $STORAGE_DEVICE to be something like "/dev/sda" or ""
 
