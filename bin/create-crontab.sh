@@ -5,7 +5,6 @@
 # not a good long-term strategy.
 #
 # TODO: centralize setting values for directories (location of engineroom, logs, etc.)
-# TODO: when encryption is done, better to write logs to /opt/cloudfleet/data/logs/blimp-upgrade.log
 crontab - <<EOF
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 0 4 * * * sleep ${RANDOM:0:2}m; /opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
