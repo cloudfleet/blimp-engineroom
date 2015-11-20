@@ -16,4 +16,8 @@ swapon $SWAP_MAPPED_DEVICE
 mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
+mount -a
+mount /var/lib/docker
+mount /opt/cloudfleet/data
+
 exit
