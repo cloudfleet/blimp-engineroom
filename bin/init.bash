@@ -1,4 +1,4 @@
-if [ ! -z "$CF_INITIALIZED_P" ] ; then
+if [ -z "$CF_INITIALIZED_P" ] ; then
     # Define and ensure directories exist
     export CF=/opt/cloudfleet
     export CF_VAR=${CF}/var
