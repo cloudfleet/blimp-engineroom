@@ -10,7 +10,7 @@ if [ ! -z "$CF_INITIALIZED_P" ] ; then
     date 
     uname -a 
     lsb_release -a
-    lsbls --fs
+    lsblk --fs
 
     ## Log all command invocations
     set -x
