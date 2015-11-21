@@ -15,7 +15,6 @@ docker stop $(docker ps -a -q)
 # stop docker if exists
 service docker stop
 
-
 # if paths exist, move their contents to a /tmp folder
 rm -rf /tmp/cf-data
 #rm -rf /tmp/docker-data
@@ -31,11 +30,12 @@ fi
 
 # we're not gonna try copying docker data, because there's too much
 rm -rf /var/lib/docker/*
+# in case it was on an external drive
+umount /var/lib/docker
 
 # create paths if they don't exist
 mkdir -p $CLOUDFLEET_DATA_PATH
 mkdir -p $DOCKER_DATA_PATH
-
 
 mount -a
 
@@ -55,6 +55,9 @@ rm -rf /tmp/cf-data
 # set permissions
 chmod 700 ${CLOUDFLEET_DATA_PATH}
 chmod 700 ${DOCKER_DATA_PATH}
+
+# once again to be sure
+mount /var/lib/docker
 
 # write the new docker sysv/upstart/systemd options that use btrfs
 $DIR/write_docker_opts.sh
