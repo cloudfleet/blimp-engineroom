@@ -14,7 +14,8 @@ echo "====================================="
 
 # check that USBs with correctly labeled partitions exist and if so
 # prepare and encrypt key, storage, swap
-(cd $DIR/cryptpart; ./encrypt_device.sh) 
+# TODO move out of initialize config, as it has potential fatal side effects
+(cd $DIR/cryptpart; . ./encrypt_device.sh) 
 
 # docker-compose will be rendered in this folder
 mkdir -p /opt/cloudfleet/data/config/cache
