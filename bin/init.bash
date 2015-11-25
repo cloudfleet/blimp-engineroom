@@ -3,6 +3,8 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     export CF=/opt/cloudfleet
     export CF_VAR=${CF}/var
     export CF_DATA=${CF}/data
+    export CF_ENGINEROOM=${CF}/engineroom
+    export CF_BIN=${CF_ENGINEROOM}/bin
 
     # Ensure directories exist
     mkdir -p "${CF_VAR}" || echo "Failed to create ${CF_VAR}. Continuing."
@@ -14,6 +16,8 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     uname -a 
     lsb_release -a
     lsblk --fs
+    echo Initial ${CF_ENGINEROOM} git status
+    (cd ${CF_ENGINEROOM} && git status)
 
     ## Log all command invocations
     set -x
