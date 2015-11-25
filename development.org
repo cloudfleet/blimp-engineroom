@@ -1,0 +1,25 @@
+* TODO
+** Failure of encryptsetup
+*** Failure in pulling down images
+#+BEGIN_ASCII
+Error pulling image (latest) from registry.hub.docker.com/cloudfleet/blimp-doveshed, ApplyLayer exit status 1 stdout:  stderr: unexpected EOF
+#+END_ASCII 
+
+* Too small /var/docker/lib?
+#+BEGIN_ASCII
+Filesystem          Size  Used Avail Use% Mounted on
+/dev/sda1            31G  4.9G   25G  17% /
+udev                 10M     0   10M   0% /dev
+tmpfs               403M   22M  381M   6% /run
+tmpfs              1006M  132K 1005M   1% /dev/shm
+tmpfs               5.0M  4.0K  5.0M   1% /run/lock
+tmpfs              1006M     0 1006M   0% /sys/fs/cgroup
+tmpfs               202M   12K  202M   1% /run/user/1000
+/dev/sdb1            30G   44M   28G   1% /mnt/storage-key
+/dev/mapper/cf-str  5.3G  834M  4.0G  18% /mnt/storage
+/dev/mapper/cf-str  5.3G  834M  4.0G  18% /var/lib/docker
+#+END_ASCII
+
+
+
+
