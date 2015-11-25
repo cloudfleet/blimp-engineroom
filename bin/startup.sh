@@ -7,9 +7,7 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # open encrypted partitions
 # (can't happen sooner due to systemd ignoring keyscript on Debian >=8.1)
 
-. "$DIR/cryptpart/cryptpart_startup.sh"
-# Need to reset DIR after invoking 
-DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+$DIR/cryptpart/cryptpart_startup.sh
 
 # now start the usual engineroom drill
 #mkdir -p /opt/cloudfleet/data/logs/
