@@ -24,6 +24,3 @@ echo "========================================"
 echo "`date "+%F %T"` Upgrade and restart took ${T} seconds."
 echo "========================================"
 
-# Copy the startup log over to permanent storage
-
-cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log

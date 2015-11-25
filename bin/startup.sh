@@ -13,4 +13,11 @@ $DIR/cryptpart/cryptpart_startup.sh
 #mkdir -p /opt/cloudfleet/data/logs/
 . "$DIR/upgrade-blimp.sh"
 
-exit
+# Copy the startup log over to permanent storage
+if [ -r ${CF_VAR}/startup.log ]; then
+    echo Merging startup log to ${CF_LOGS}
+    cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log
+    rm ${CF_VAR}/startup.log
+fi
+
+exit 0
