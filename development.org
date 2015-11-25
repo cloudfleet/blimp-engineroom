@@ -39,9 +39,77 @@ there.  Power cycle is potentially fatal.
 
 vbox upgrade failed to have logs 
 
+** Why are we using 'service' instead of 'systemctl' ?
+systemd uses systemctl
 
+* vbox failure to start containers
 
+#+BEGIN_ASCII
+2015-11-25 14:54:31 Starting containers ... 
+==============================
+Creating blimp_conduit_1...
+Creating blimp_doveshed_1...
+Traceback (most recent call last):
+  File "/usr/local/bin/docker-compose", line 9, in <module>
+    load_entry_point('docker-compose==1.4.0', 'console_scripts', 'docker-compose')()
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/main.py", line 39, in main
+    command.sys_dispatch()
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py", line 21, in sys_dispatch
+    self.dispatch(sys.argv[1:], None)
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/command.py", line 27, in dispatch
+    super(Command, self).dispatch(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py", line 24, in dispatch
+    self.perform_command(*self.parse(argv, global_options))
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/command.py", line 59, in perform_command
+    handler(project, command_options)
+  File "/usr/local/lib/python2.7/dist-packages/compose/cli/main.py", line 495, in up
+    timeout=timeout
+  File "/usr/local/lib/python2.7/dist-packages/compose/project.py", line 265, in up
+    timeout=timeout
+  File "/usr/local/lib/python2.7/dist-packages/compose/service.py", line 369, in execute_convergence_plan
+    do_build=do_build,
+  File "/usr/local/lib/python2.7/dist-packages/compose/service.py", line 276, in create_container
+    return Container.create(self.client, **container_options)
+  File "/usr/local/lib/python2.7/dist-packages/compose/container.py", line 42, in create
+    response = client.create_container(**options)
+  File "/usr/lib/python2.7/dist-packages/docker/client.py", line 245, in create_container
+    return self.create_container_from_config(config, name)
+  File "/usr/lib/python2.7/dist-packages/docker/client.py", line 252, in create_container_from_config
+    res = self._post_json(u, data=config, params=params)
+  File "/usr/lib/python2.7/dist-packages/docker/clientbase.py", line 128, in _post_json
+    return self._post(url, data=json.dumps(data2), **kwargs)
+  File "/usr/lib/python2.7/dist-packages/docker/clientbase.py", line 83, in _post
+    return self.post(url, **self._set_request_timeout(kwargs))
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 508, in post
+    return self.request('POST', url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 465, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 573, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/adapters.py", line 433, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=60)
+==============================
+2015-11-25 14:55:59  Started containers. 
 
+#+END_ASCII
+* vbox failure to start
+#+BEGIN_ASCII
+2015-11-25 15:11:38 Starting containers ... 
+==============================
+Creating blimp_conduit_1...
+Creating blimp_doveshed_1...
+Creating blimp_mailpileeasye_1...
+Creating blimp_musterroll_1...
+Creating blimp_radicale_1...
+Creating blimp_mailbox_1...
+Creating blimp_cockpit_1...
+Creating blimp_wellknown_1...
+Creating blimp_nginx_1...
+Creating blimp_pagekite_1...
+Cannot find child for /blimp_pagekite_1
+==============================
+#+END_ASCII
 
 
 
