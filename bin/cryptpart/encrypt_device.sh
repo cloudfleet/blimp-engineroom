@@ -48,7 +48,7 @@ echo "`date "+%F %T"`  Encrypting storage if necessary & possible ... "
 echo "====================================="
 
 echo " - set variables (we only care about the device here - partitions will be wrong)"
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing cryptsetup"
 apt-get -y install cryptsetup

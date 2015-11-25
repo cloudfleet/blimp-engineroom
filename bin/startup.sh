@@ -8,7 +8,7 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # (can't happen sooner due to systemd ignoring keyscript on Debian >=8.1)
 
 . "$DIR/cryptpart/cryptpart_startup.sh"
-# Need to reset after invoking 
+# Need to reset DIR after invoking 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # now start the usual engineroom drill

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 # first unmount and delete any btrfs subvolumes
