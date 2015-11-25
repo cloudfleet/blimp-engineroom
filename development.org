@@ -1,9 +1,18 @@
 * TODO
-** Failure of encryptsetup
-*** Failure in pulling down images
+** Failures of encryptsetup
+*** TODO Failure in pulling down images
 #+BEGIN_ASCII
 Error pulling image (latest) from registry.hub.docker.com/cloudfleet/blimp-doveshed, ApplyLayer exit status 1 stdout:  stderr: unexpected EOF
 #+END_ASCII 
+
+We are currently pulling down complete images as part of docker reboot.
+
+**** Suggestion from Christoph
+#+BEGIN_ASCII
+@doublemalt re: rollback ... maybe set up a retry that is only cancxceled on success?
+#+END_ASCII
+
+We need to sort out exit status from sub-scripts.
 
 * Too small /var/docker/lib?
 #+BEGIN_ASCII
@@ -19,6 +28,7 @@ tmpfs               202M   12K  202M   1% /run/user/1000
 /dev/mapper/cf-str  5.3G  834M  4.0G  18% /mnt/storage
 /dev/mapper/cf-str  5.3G  834M  4.0G  18% /var/lib/docker
 #+END_ASCII
+No, just my problem in mixing up key/str
 
 
 
