@@ -5,6 +5,7 @@
 # some convoluted approaches are necessary to make this yield the correct output.
 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+set -x 
 
 # constants
 #----------
