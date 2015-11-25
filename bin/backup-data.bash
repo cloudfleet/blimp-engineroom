@@ -2,7 +2,7 @@
 #
 # Backup /opt/cloudfleet/data
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${DIR}/init.bash"
 
 # as root...

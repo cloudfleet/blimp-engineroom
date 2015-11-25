@@ -2,7 +2,7 @@
 #
 # This script updates and restarts the containers and the docker-compose.yml
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "========================================"
 echo "`date "+%F %T"` Upgrading containers ..."

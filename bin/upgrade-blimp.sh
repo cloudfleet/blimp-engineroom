@@ -6,7 +6,7 @@
 # WARNING: Do not change this file if you are not totally sure you know what
 # you are doing as it might break the upgrade process
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${DIR}/init.bash"
 
 echo "========================================"

@@ -3,10 +3,7 @@
 # This script is used to initialize the configuration.
 # If something is already initialized, it doesn't do anything.
 # (Except updating the apps.yml file)
-
-
-
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "====================================="
 echo "`date "+%F %T"`  Initializing config where necessary ... "
@@ -28,7 +25,7 @@ fi
 # For now always update apps file (until users can customize apps list)
 cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
-$DIR/create-crontab.sh
+. $DIR/create-crontab.sh
 
 CLOUDFLEET_OTP=$($DIR/get_otp.sh)
 
