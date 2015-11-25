@@ -9,6 +9,7 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
 
     # Ensure directories exist
     mkdir -p "${CF_VAR}" || echo "Failed to create ${CF_VAR}. Continuing."
+    mkdir -p "${CF_LOGS}" || echo "Failed to create ${CF_LOGS}. Continuing."
 
     # Debug settings
 
