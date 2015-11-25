@@ -9,8 +9,11 @@ btrfs subvolume create ${STORAGE_MOUNTPOINT}/docker
 
 btrfs subvol list $STORAGE_MOUNTPOINT
 
-# stop all running containers
-docker stop $(docker ps -a -q)
+# potentially stop all running containers
+docker_pids=$(docker ps -a -q)
+if [[ ! -z "${docker_pids}" ]]; then 
+    docker stop $docker_pids
+fi
 
 # stop docker if exists
 service docker stop
