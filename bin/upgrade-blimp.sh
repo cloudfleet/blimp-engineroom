@@ -24,5 +24,6 @@ echo "========================================"
 echo "`date "+%F %T"` Upgrade and restart took ${T} seconds."
 echo "========================================"
 
-# move the logs over to where they are backed up
-cp /opt/cloudfleet/startup.log /opt/cloudfleet/data/logs/startup.log
+# Copy the startup log over to permanent storage
+
+cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log

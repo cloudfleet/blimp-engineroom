@@ -3,6 +3,7 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     export CF=/opt/cloudfleet
     export CF_VAR=${CF}/var
     export CF_DATA=${CF}/data
+    export CF_LOGS=${CF_DATA}/logs
     export CF_ENGINEROOM=${CF}/engineroom
     export CF_BIN=${CF_ENGINEROOM}/bin
 
