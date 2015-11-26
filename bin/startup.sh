@@ -10,10 +10,10 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 $DIR/cryptpart/cryptpart_startup.sh
 
 # now start the usual engineroom drill
-#mkdir -p /opt/cloudfleet/data/logs/
 . "$DIR/upgrade-blimp.sh"
 
 # Copy the startup log over to permanent storage
+mkdir -p ${CF_LOGS}
 if [ -r ${CF_VAR}/startup.log ]; then
     echo Merging startup log to ${CF_LOGS}
     cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log
