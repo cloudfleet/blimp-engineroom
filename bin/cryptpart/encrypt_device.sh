@@ -161,6 +161,8 @@ swapon $SWAP_MAPPED_DEVICE
 $DIR/create_btrfs_partitions.sh
 
 mount -a
+mount /var/lib/docker
+mount /opt/cloudfleet/data
 
 echo "complete"
 
