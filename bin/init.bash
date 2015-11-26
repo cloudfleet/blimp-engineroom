@@ -7,9 +7,6 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     export CF_ENGINEROOM=${CF}/engineroom
     export CF_BIN=${CF_ENGINEROOM}/bin
 
-    # Ensure directories exist
-    mkdir -p "${CF_VAR}" || echo "Failed to create ${CF_VAR}. Continuing."
-    mkdir -p "${CF_LOGS}" || echo "Failed to create ${CF_LOGS}. Continuing."
 
     # Debug settings
 
@@ -25,6 +22,12 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     set -x
 
 fi
+
+# Ensure directories exist
+# TODO replace with a skeleton directory hierarchy description
+mkdir -p "${CF_VAR}" || echo "Failed to create ${CF_VAR}. Continuing."
+mkdir -p "${CF_LOGS}" || echo "Failed to create ${CF_LOGS}. Continuing."
+
 
 export CF_INITIALIZED_P=true
 
