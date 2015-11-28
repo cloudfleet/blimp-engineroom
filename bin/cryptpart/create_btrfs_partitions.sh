@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 # data & docker - important names, used in write_fstab.sh
@@ -40,10 +40,19 @@ umount /var/lib/docker
 mkdir -p $CLOUDFLEET_DATA_PATH
 mkdir -p $DOCKER_DATA_PATH
 
+# This is probably no longer necessary
 mount -a
 
+# These partitions are now marked noauto
+mount $DOCKER_DATA_PATH
 if [ $? -ne 0 ]; then
-    echo "There was an error mounting something. Won't delete anything."
+    echo "There was an error mounting $DOCKER_DATA_PATH. Won't delete anything."
+    exit 1
+fi
+
+mount $CLOUDFLEET_DATA_PATH
+if [ $? -ne 0 ]; then
+    echo "There was an error mounting $CLOUDFLEET_DATA_PATH. Won't delete anything."
     exit 1
 fi
 
