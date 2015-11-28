@@ -43,22 +43,35 @@ mkdir -p $DOCKER_DATA_PATH
 # This is probably no longer necessary
 mount -a
 
+# diagnostics
+apt-get install -y freebsd-buildutils # for fmtreee
+
+fmtree -c -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
+
 # These partitions are now marked noauto
+sync
 mount $DOCKER_DATA_PATH
 if [ $? -ne 0 ]; then
     echo "There was an error mounting $DOCKER_DATA_PATH. Won't delete anything."
     exit 1
 fi
-
+sync
 mount $CLOUDFLEET_DATA_PATH
 if [ $? -ne 0 ]; then
     echo "There was an error mounting $CLOUDFLEET_DATA_PATH. Won't delete anything."
     exit 1
 fi
+sync
 
+fmtree -c -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
+if [ $? -ne 0 ]; then
+    echo Mismatch in ${CLOUDFLEET_DATA_PATH} mtree
+    read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
+fi 
 # move data back
 mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
 #mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
+sync
 
 # remove temporary folders
 rm -rf /tmp/cf-data
