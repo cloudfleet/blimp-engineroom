@@ -63,7 +63,7 @@ if [ $? -ne 0 ]; then
 fi
 sync
 
-fmtree -c -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
+fmtree -p /opt/cloudfleet/data < /opt/cloudfleet/opt-cloudfleet-data.mtree
 if [ $? -ne 0 ]; then
     echo Mismatch in ${CLOUDFLEET_DATA_PATH} mtree
     read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
