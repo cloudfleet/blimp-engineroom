@@ -6,8 +6,8 @@ echo "========================================"
 echo "`date "+%F %T"` Upgrading underlying operating system ..."
 echo "========================================"
 
-apt-get update
-apt-get upgrade
+apt-get -y update
+apt-get -y upgrade
 
 echo "========================================"
 echo "`date "+%F %T"` Upgraded underlying operating system"
