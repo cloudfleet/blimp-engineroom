@@ -14,9 +14,9 @@ echo "`date "+%F %T"` Upgrading blimp ..."
 echo "========================================"
 
 T="$(date +%s)"
+. $DIR/upgrade-system.sh
 . $DIR/upgrade-engine-room.sh
 . $DIR/initialize-config.sh
-. $DIR/upgrade-system.sh
 . $DIR/upgrade-containers.sh
 T="$(($(date +%s)-T))"
 

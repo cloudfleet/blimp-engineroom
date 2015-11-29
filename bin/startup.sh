@@ -6,7 +6,7 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # open encrypted partitions
 # (can't happen sooner due to systemd ignoring keyscript on Debian >=8.1)
-
+. $DIR/upgrade-system.sh # First try to upgrade the OS
 $DIR/cryptpart/cryptpart_startup.sh
 
 # now start the usual engineroom drill
