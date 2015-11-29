@@ -63,15 +63,17 @@ if [ $? -ne 0 ]; then
 fi
 sync
 
+# move data back
+mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
+#mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
+sync
+
+# Compare filesystem with original
 fmtree -p /opt/cloudfleet/data < /opt/cloudfleet/opt-cloudfleet-data.mtree
 if [ $? -ne 0 ]; then
     echo Mismatch in ${CLOUDFLEET_DATA_PATH} mtree
     read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
 fi 
-# move data back
-mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
-#mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
-sync
 
 # remove temporary folders
 rm -rf /tmp/cf-data
