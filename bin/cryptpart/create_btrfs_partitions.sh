@@ -45,8 +45,8 @@ mount -a
 
 # diagnostics
 apt-get install -y freebsd-buildutils # for fmtreee
-
-fmtree -c -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
+mtree_keywords="flags,gid,mode,nlink,size,link,uid" # don't include time
+fmtree -c -k "${mtree_keywords}" -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
 
 # These partitions are now marked noauto
 sync
@@ -69,7 +69,7 @@ mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
 sync
 
 # Compare filesystem with original
-fmtree -p /opt/cloudfleet/data < /opt/cloudfleet/opt-cloudfleet-data.mtree
+fmtree -k "${mtree_keywords}" -p /opt/cloudfleet/data < /opt/cloudfleet/opt-cloudfleet-data.mtree
 if [ $? -ne 0 ]; then
     echo Mismatch in ${CLOUDFLEET_DATA_PATH} mtree
     read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
