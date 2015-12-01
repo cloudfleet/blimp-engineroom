@@ -40,7 +40,7 @@ umount /var/lib/docker
 mkdir -p $CLOUDFLEET_DATA_PATH
 mkdir -p $DOCKER_DATA_PATH
 
-# This is probably no longer necessary
+# This is probably no longer necessary; it certainly doesn't mount filesystems marked at 'noauto'
 mount -a
 
 # diagnostics
@@ -75,9 +75,8 @@ if [ $? -ne 0 ]; then
     read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
 fi 
 
-# remove temporary folders
-rm -rf /tmp/cf-data
-#rm -rf /tmp/docker-data
+## DON'T remove temporary folders (we can fallback to known good
+## boot).  They should be gone at next reboot anyways.
 
 # set permissions
 chmod 700 ${CLOUDFLEET_DATA_PATH}
