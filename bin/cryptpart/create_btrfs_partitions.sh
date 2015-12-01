@@ -3,6 +3,8 @@
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
+apt-get install -y rsync freebsd-buildutils # for fmtreee
+
 # data & docker - important names, used in write_fstab.sh
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/data
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/docker
@@ -19,12 +21,10 @@ fi
 service docker stop
 
 # if paths exist, move their contents to a /tmp folder
-rm -rf /tmp/cf-data
-#rm -rf /tmp/docker-data
-mkdir -p /tmp/cf-data/
-#mkdir -p /tmp/docker-data/
+rm -rf /tmp/cf-data && mkdir -p /tmp/cf-data/
+
 if [ -d $CLOUDFLEET_DATA_PATH ] ; then
-    mv ${CLOUDFLEET_DATA_PATH}/* /tmp/cf-data/
+    rsync -avz ${CLOUDFLEET_DATA_PATH}/ /tmp/cf-data/
 fi
 
 # if [ -d $DOCKER_DATA_PATH ] ; then
@@ -44,7 +44,6 @@ mkdir -p $DOCKER_DATA_PATH
 mount -a
 
 # diagnostics
-apt-get install -y freebsd-buildutils # for fmtreee
 mtree_keywords="flags,gid,mode,nlink,size,link,uid" # don't include time
 fmtree -c -k "${mtree_keywords}" -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
 
@@ -64,7 +63,7 @@ fi
 sync
 
 # move data back
-mv /tmp/cf-data/* ${CLOUDFLEET_DATA_PATH}/
+rsync -avz /tmp/cf-data/ ${CLOUDFLEET_DATA_PATH}/
 #mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
 sync
 
