@@ -32,16 +32,14 @@ fi
 # fi
 
 # we're not gonna try copying docker data, because there's too much
-rm -rf /var/lib/docker/*
+# And we're not gonna remove it in case we need it again
+
 # in case it was on an external drive
 umount /var/lib/docker
 
 # create paths if they don't exist
 mkdir -p $CLOUDFLEET_DATA_PATH
 mkdir -p $DOCKER_DATA_PATH
-
-# This is probably no longer necessary; it certainly doesn't mount filesystems marked at 'noauto'
-mount -a
 
 # diagnostics
 mtree_keywords="flags,gid,mode,nlink,size,link,uid" # don't include time
@@ -77,9 +75,9 @@ fi
 ## DON'T remove temporary folders (we can fallback to known good
 ## boot).  They should be gone at next reboot anyways.
 
-# set permissions
-chmod 700 ${CLOUDFLEET_DATA_PATH}
-chmod 700 ${DOCKER_DATA_PATH}
+## set permissions
+#chmod 700 ${CLOUDFLEET_DATA_PATH}
+#chmod 700 ${DOCKER_DATA_PATH}
 
 # once again to be sure
 mount /var/lib/docker
