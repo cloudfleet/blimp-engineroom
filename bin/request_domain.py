@@ -25,5 +25,5 @@ if r.status_code == 200:
     else:
         quit(1)
 else:
-    print('Error: %s' % r.text)
+    print('Error: %s. Is the OTP correct? Double-check on Spire!' % r.text)
     quit(1)
