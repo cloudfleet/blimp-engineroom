@@ -43,7 +43,8 @@ def main(argv):
         print('is_correct: {}'.format(is_correct))
         sys.exit(int(not is_correct)) # appropriate exit code
     except:
-       sys.exit(0) 
+        print "Exception in running partition check: %s %s\n%s" % (sys.exc_type, sys.exc_value, sys.exc_traceback)
+        sys.exit(0) 
 
 if __name__ == "__main__":
     main(sys.argv[1:])
