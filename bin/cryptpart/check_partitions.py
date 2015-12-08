@@ -23,21 +23,27 @@ def check_correct(disks):
                 pass
     return swap_encrypted and storage_encrypted
 
+# Return sys.exit()
+#  0 means don't either the partitions are ok, or that an exception has been thrown
+#  non-zero means it is ok to run the encrypt setup routines
 def main(argv):
-    if len(argv) > 1:
-        print('Usage: ./parse.py blk_filename')
-        return
-    elif len(argv) == 1:
-        blk_filename = argv[0]
-        with open(blk_filename) as blk_file:
-            result = parse_blk(blk_file)
-    else:
-        # try to read the piped input
-        result = parse_blk(fileinput.input())
-    pprint.PrettyPrinter(indent=4).pprint(result)
-    is_correct = check_correct(result)
-    print('is_correct: {}'.format(is_correct))
-    sys.exit(int(not is_correct)) # appropriate exit code
+    try: 
+        if len(argv) > 1:
+            print('Usage: ./parse.py blk_filename')
+            return
+        elif len(argv) == 1:
+            blk_filename = argv[0]
+            with open(blk_filename) as blk_file:
+                result = parse_blk(blk_file)
+        else:
+            # try to read the piped input
+            result = parse_blk(fileinput.input())
+        pprint.PrettyPrinter(indent=4).pprint(result)
+        is_correct = check_correct(result)
+        print('is_correct: {}'.format(is_correct))
+        sys.exit(int(not is_correct)) # appropriate exit code
+    except:
+       sys.exit(0) 
 
 if __name__ == "__main__":
     main(sys.argv[1:])
