@@ -35,12 +35,8 @@ def parse_lsblk(lsblk_pairs_output):
             partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
             disk['partitions'].append(partition)
             continue
-        # XXX Diverges from original code
         if node_type in set(['crypt']):
-            node_name = d['NAME']
-            partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
-            disk['partitions'].append(partition)
-            continue
+            partition['crypt'] = node_name
     return disks
 
 def parse_blk_orig(blk_file):
@@ -70,7 +66,5 @@ def parse_blk_orig(blk_file):
             # crypt belonging to a partition
             node_name = blk_list[1].split('\x80')[1]
             partition['crypt'] = node_name
-            # Why wouldn't we continue with the loop?
-            # What if there is more than one crypt partition?
     return disks
 
