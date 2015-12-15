@@ -62,10 +62,10 @@ if [ -z "$KEY_PARTITION" ]; then
 fi
 
 # get partition name from lsblk automatically and check the partitions
-lsblk | $DIR/check_partitions.py
+lsblk --pairs | $DIR/check_partitions.py
 
 if [ $? -eq 0 ]; then
-    echo "Partitions already encrypted. Not formatting"
+    echo "Partitions either already encrypted or not ready for formating. Exiting from cryptpart."
     exit
 fi
 

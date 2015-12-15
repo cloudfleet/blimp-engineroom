@@ -5,7 +5,45 @@ import re
 SWAP_LABEL = 'cf-swap'
 STORAGE_LABEL = 'cf-str'
 
-def parse_blk(blk_file):
+def parse_lsblk(lsblk_pairs_output):
+    """Parse 'lsblk --pairs' output into dictionary."""
+    disks = []
+    for line in lsblk_pairs_output:
+        pairs = re.split('\s+', line)
+        d = {}
+        for pair in pairs:
+            key_value = re.split('="', pair)
+            if len(key_value) != 2:
+                continue
+            key = key_value[0]
+            value = key_value[1]
+            value = value[:-1]
+            d[key] = value
+        node_type = d['TYPE']
+        node_size = d['SIZE']
+        
+        if node_type in set(['disk', 'loop']):  # or blk_list[0][0] not in set(['└', '├', '│', ' ']):
+            disk = {'name': d['NAME'], 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
+            if node_type == 'disk':
+                disk['partitions'] = []
+            disks.append(disk)
+            # get size info if relevant
+            continue
+        if node_type in set(['part', 'dm']):
+            # new partition (or whatever dm is)
+            node_name = d['NAME']
+            partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
+            disk['partitions'].append(partition)
+            continue
+        # XXX Diverges from original code
+        if node_type in set(['crypt']):
+            node_name = d['NAME']
+            partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
+            disk['partitions'].append(partition)
+            continue
+    return disks
+
+def parse_blk_orig(blk_file):
     """parse lsblk output into a dictionary"""
     disks = []
     for line in blk_file:
@@ -36,36 +74,3 @@ def parse_blk(blk_file):
             # What if there is more than one crypt partition?
     return disks
 
-def parse_blk2(lsblk_pairs_output):
-    """Parse lsblk output with --pairs option into dictionary"""
-    disks = []
-    for line in lsblk_pairs_output:
-        pairs = re.split('\s+', line)
-        d = {}
-        for pair in pairs:
-            key_value = re.split('="', pair)
-            key = key_value[0]
-            value = key_value[:-1]
-            d[key] = value
-        node_type = d['TYPE']
-        node_size = d['SIZE']
-        if node_type in set(['disk', 'loop']): # or blk_list[0][0] not in set(['└', '├', '│', ' ']):
-            disk = {'name': d['NAME'], 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
-            if node_type == 'disk':
-                disk['partitions'] = []
-            disks.append(disk)
-            # get size info if relevant
-            continue
-        if node_type in set(['part', 'dm']):
-            # new partition (or whatever dm is)
-            node_name = d['NAME']
-            partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
-            disk['partitions'].append(partition)
-            continue
-        # XXX Diverges from original code
-        if node_type in set(['crypt']):
-            node_name = d['NAME']
-            partition = {'name': node_name, 'type': node_type, 'size': node_size, 'mountpoint': d['MOUNTPOINT']}
-            disk['partitions'].append(partition)
-            continue
-    return disks
