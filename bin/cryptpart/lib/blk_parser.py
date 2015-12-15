@@ -36,6 +36,7 @@ def parse_lsblk(lsblk_pairs_output):
             disk['partitions'].append(partition)
             continue
         if node_type in set(['crypt']):
+            node_name = d['NAME']
             partition['crypt'] = node_name
     return disks
 
