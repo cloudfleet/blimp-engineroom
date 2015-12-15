@@ -5,7 +5,14 @@
 #
 # It also removes all untagged docker images to avoid filling up the SD card
 
-
+# parameters to give Docker a better chance of not hanging up
+export COMPOSE_HTTP_TIMEOUT=120
+export DOCKER_CLIENT_TIMEOUT=120 # for older compose versions
+# more go processes suggested in
+# https://github.com/docker/docker/issues/9656
+export GOMAXPROCS=4
+# - provisionally only set these params for now
+# (if necessary add retries like in start-containers.sh)
 
 echo "=================================="
 echo "`date "+%F %T"`  Stopping containers ... "
