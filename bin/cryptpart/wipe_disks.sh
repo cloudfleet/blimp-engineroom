@@ -56,7 +56,6 @@ w
 " | fdisk $i; done
 
     # alternatively, if using FAT32 (for speed/Win debugging):
-    #     apt-get install dosfstools
     
     # unmount all partitions on the devices - necessary again for some reason
     for n in $STORAGE_DEVICE* ; do umount $n ; done

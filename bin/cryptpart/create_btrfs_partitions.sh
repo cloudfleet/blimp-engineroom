@@ -3,8 +3,6 @@
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
-apt-get install -y rsync freebsd-buildutils # for fmtreee
-
 # data & docker - important names, used in write_fstab.sh
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/data
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/docker

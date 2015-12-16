@@ -51,7 +51,6 @@ echo " - set variables (we only care about the device here - partitions will be 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Installing cryptsetup"
-apt-get -y install cryptsetup
 
 . $DIR/set_partition_vars.sh
 # -> after this first run, we expect $STORAGE_DEVICE to be something like "/dev/sda" or ""
@@ -125,7 +124,6 @@ echo " - format the swap"
 mkswap -L ${SWAP_PARTITION_LABEL} $SWAP_PARTITION
 
 # format it to btrfs
-apt-get install btrfs-tools # only once somewhere
 mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
 # exit # early for debug purposes
