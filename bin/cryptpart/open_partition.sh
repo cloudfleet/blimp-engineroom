@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 # open partiotion
@@ -15,5 +15,9 @@ swapon $SWAP_MAPPED_DEVICE
 # mount it once only
 mkdir -p $STORAGE_MOUNTPOINT
 mount $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
+
+mount -a
+mount /var/lib/docker
+mount /opt/cloudfleet/data
 
 exit

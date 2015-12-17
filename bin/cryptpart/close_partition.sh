@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 # first unmount and delete any btrfs subvolumes
@@ -26,5 +26,9 @@ echo "closing the LUKS partition"
 #cryptsetup close $SWAP_PARTITION_LABEL
 cryptdisks_stop $STORAGE_PARTITION_LABEL
 cryptdisks_stop $SWAP_PARTITION_LABEL
+
+# once again, in case the crypttab doesn't have the right settings
+cryptsetup luksClose /dev/mapper/$STORAGE_PARTITION_LABEL
+cryptsetup luksClose /dev/mapper/$SWAP_PARTITION_LABEL
 
 exit

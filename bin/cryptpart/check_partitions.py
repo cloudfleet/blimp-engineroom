@@ -3,10 +3,10 @@
 import sys
 import pprint
 import fileinput
-from lib.blk_parser import parse_blk, SWAP_LABEL, STORAGE_LABEL
+from lib.blk_parser import parse_lsblk, SWAP_LABEL, STORAGE_LABEL
 
 def check_correct(disks):
-    """check if swap and storage there and encrypted"""
+    """Check if swap and storage are available in lsblk output and encrypted"""
     #import pdb; pdb.set_trace()
     swap_encrypted = False
     storage_encrypted = False
@@ -23,21 +23,31 @@ def check_correct(disks):
                 pass
     return swap_encrypted and storage_encrypted
 
+# Return via sys.exit()
+#  0 means don't either the partitions are ok, or that an exception has been thrown
+#  non-zero means it is ok to run the encrypt setup routines
 def main(argv):
-    if len(argv) > 1:
-        print('Usage: ./parse.py blk_filename')
-        return
-    elif len(argv) == 1:
-        blk_filename = argv[0]
-        with open(blk_filename) as blk_file:
-            result = parse_blk(blk_file)
-    else:
-        # try to read the piped input
-        result = parse_blk(fileinput.input())
-    pprint.PrettyPrinter(indent=4).pprint(result)
-    is_correct = check_correct(result)
-    print('is_correct: {}'.format(is_correct))
-    sys.exit(int(not is_correct)) # appropriate exit code
+    is_correct = False
+    result = False
+    try:
+        if len(argv) > 1:
+            print('Usage: ./check_partitions.py lsblk--pairs-output')
+            is_correct = False
+        elif len(argv) == 1:
+            blk_filename = argv[0]
+            with open(blk_filename) as blk_file:
+                result = parse_lsblk(blk_file)
+        else:
+            # try to read the piped input
+            result = parse_lsblk(fileinput.input())
+        if result: 
+            pprint.PrettyPrinter(indent=4).pprint(result)
+        is_correct = check_correct(result)
+        print('Are the correctly formatted USB keys for encryption mounted?  {}'.format(is_correct))
+    except:
+        print "Exception in running partition check: %s %s\n%s" % (sys.exc_type, sys.exc_value, sys.exc_traceback)
+        sys.exit(0)
+    sys.exit(int(not is_correct)) 
 
 if __name__ == "__main__":
     main(sys.argv[1:])

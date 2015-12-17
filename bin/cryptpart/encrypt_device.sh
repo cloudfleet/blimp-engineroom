@@ -48,7 +48,10 @@ echo "`date "+%F %T"`  Encrypting storage if necessary & possible ... "
 echo "====================================="
 
 echo " - set variables (we only care about the device here - partitions will be wrong)"
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "Installing cryptsetup"
+
 . $DIR/set_partition_vars.sh
 # -> after this first run, we expect $STORAGE_DEVICE to be something like "/dev/sda" or ""
 
@@ -58,10 +61,10 @@ if [ -z "$KEY_PARTITION" ]; then
 fi
 
 # get partition name from lsblk automatically and check the partitions
-lsblk | $DIR/check_partitions.py
+lsblk --pairs | $DIR/check_partitions.py
 
 if [ $? -eq 0 ]; then
-    echo "Partitions already encrypted. Not formatting"
+    echo "Partitions either already encrypted or not ready for formating. Exiting from cryptpart."
     exit
 fi
 
@@ -121,7 +124,6 @@ echo " - format the swap"
 mkswap -L ${SWAP_PARTITION_LABEL} $SWAP_PARTITION
 
 # format it to btrfs
-apt-get install btrfs-tools # only once somewhere
 mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
 # exit # early for debug purposes
@@ -157,6 +159,8 @@ swapon $SWAP_MAPPED_DEVICE
 $DIR/create_btrfs_partitions.sh
 
 mount -a
+mount /var/lib/docker
+mount /opt/cloudfleet/data
 
 echo "complete"
 

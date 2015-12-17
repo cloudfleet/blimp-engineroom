@@ -3,7 +3,7 @@
 # expected usage:
 # ./write_crypttab.sh $SWAP_PARTITION_BY_ID $STORAGE_PARTITION_BY_UUID
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 if [ "$#" -eq 2 ]; then

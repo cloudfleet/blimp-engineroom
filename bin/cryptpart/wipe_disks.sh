@@ -1,12 +1,17 @@
 #!/bin/bash
 
-# ./wipe_disks.sh <key device> <storage device>
-# default: key=/dev/sdb, storage=/dev/sda
-# wipe key and storage devices and label them
-# depends:
-#     apt-get install dosfstools
+# Wipe key and storage devices and label them for encrypt_device.sh
+#
+# usage:
+#    ./wipe_disks.sh <key device> <storage device>
+#
+# (default: key=/dev/sdb, storage=/dev/sda)
+#
+# You will maybe be prompted to press 'y'.
+# Interactivity with -F might be possible, but is unsafe:
+#   - https://bugs.launchpad.net/ubuntu/+source/e2fsprogs/+bug/1379902
 
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/set_partition_vars.sh
 
 $DIR/close_partition.sh
@@ -14,7 +19,6 @@ $DIR/close_partition.sh
 # delete btrfs subvolumes
 btrfs subvolume delete ${STORAGE_MOUNTPOINT}/data
 btrfs subvolume delete ${STORAGE_MOUNTPOINT}/docker
-
 
 if [ -z "$1" ]; then
     KEY_DEVICE="/dev/sdb"
@@ -29,6 +33,10 @@ else
     STORAGE_DEVICE=$2
 fi
 echo "storage device is ${STORAGE_DEVICE}"
+
+# unmount all partitions on the devices
+for n in $STORAGE_DEVICE* ; do umount $n ; done
+for n in $KEY_DEVICE* ; do umount $n ; done
 
 function wipe_drives(){
     hdd="$STORAGE_DEVICE $KEY_DEVICE"
@@ -47,10 +55,20 @@ p
 w
 " | fdisk $i; done
 
-    mkfs.vfat ${STORAGE_DEVICE}1 -n ${STORAGE_PARTITION_LABEL}
-    mkfs.vfat ${KEY_DEVICE}1 -n ${KEY_PARTITION_LABEL}
-    # mkfs.ext3 ${STORAGE_DEVICE}1 -L ${STORAGE_PARTITION_LABEL}
-    # mkfs.ext3 ${KEY_DEVICE}1 -L ${KEY_PARTITION_LABEL}
+    # alternatively, if using FAT32 (for speed/Win debugging):
+    
+    # unmount all partitions on the devices - necessary again for some reason
+    for n in $STORAGE_DEVICE* ; do umount $n ; done
+    swapoff -a
+    cryptsetup luksClose /dev/mapper/$SWAP_PARTITION_LABEL
+    $DIR/close_partition.sh
+    mkfs.ext4 ${STORAGE_DEVICE}1 -L ${STORAGE_PARTITION_LABEL}
+    # mkfs.vfat ${STORAGE_DEVICE}1 -n ${STORAGE_PARTITION_LABEL}
+    
+    for n in $KEY_DEVICE* ; do umount $n ; done
+    $DIR/close_partition.sh
+    mkfs.ext4 ${KEY_DEVICE}1 -L ${KEY_PARTITION_LABEL}
+    # mkfs.vfat ${KEY_DEVICE}1 -n ${KEY_PARTITION_LABEL}
 }
 
 wipe_drives

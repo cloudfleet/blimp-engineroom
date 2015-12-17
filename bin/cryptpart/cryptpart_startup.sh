@@ -4,8 +4,7 @@
 # - would happen automatically pre-systemd (Debian <8.1)
 # - now we manually have to do it and start any services that depend on these mountpoint (docker)
 
-DIR=$( cd "$( dirname $0 )" && pwd )
-
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # if no cryptpart-ready devices, leave (VMs or devices with no storage/key devices)
 . $DIR/set_partition_vars.sh
 if [ -z "$KEY_PARTITION" ]; then

@@ -1,14 +1,23 @@
 #!/bin/bash
+# blimp-engineroom startup script meant to run on every reboot
 
-# engineroom startup script meant to run on every reboot
-
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+. "${DIR}/init.bash"
 
 # open encrypted partitions
 # (can't happen sooner due to systemd ignoring keyscript on Debian >=8.1)
+. $DIR/upgrade-system.bash # First try to upgrade the OS
 $DIR/cryptpart/cryptpart_startup.sh
 
 # now start the usual engineroom drill
-/opt/cloudfleet/engineroom/bin/upgrade-blimp.sh >> /opt/cloudfleet/data/logs/blimp-upgrade.log 2>&1
+. "$DIR/upgrade-blimp.sh"
 
-exit
+# Copy the startup log over to permanent storage
+mkdir -p ${CF_LOGS}
+if [ -r ${CF_VAR}/startup.log ]; then
+    echo Merging startup log to ${CF_LOGS}
+    cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log
+    rm ${CF_VAR}/startup.log
+fi
+
+exit 0

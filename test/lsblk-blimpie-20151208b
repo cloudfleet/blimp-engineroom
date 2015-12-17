@@ -1,0 +1,5 @@
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+mmcblk0     179:0    0 14.7G  0 disk 
+|-mmcblk0p1 179:1    0  121M  0 part /boot/firmware
+|-mmcblk0p2 179:2    0  2.9G  0 part /
+`-mmcblk0p3 179:3    0    8G  0 part /mnt/b

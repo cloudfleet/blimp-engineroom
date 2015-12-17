@@ -3,17 +3,18 @@
 # This script is used to initialize the configuration.
 # If something is already initialized, it doesn't do anything.
 # (Except updating the apps.yml file)
-
-
-
-DIR=$( cd "$( dirname $0 )" && pwd )
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "====================================="
 echo "`date "+%F %T"`  Initializing config where necessary ... "
 echo "====================================="
 
-# check that USBs with correctly labeled partitions exist and if so prepare and encrypt key, storage, swap
-# (cd $DIR/cryptpart; ./encrypt_device.sh) # for when we flick the switch
+# check that USBs with correctly labeled partitions exist and if so
+# prepare and encrypt key, storage, swap
+# XXX potentially move out of initialize config, as it has potential fatal side effects
+echo Launching cryptpart
+(cd $DIR/cryptpart; . ./encrypt_device.sh)
+echo Finished cryptpart
 
 # docker-compose will be rendered in this folder
 mkdir -p /opt/cloudfleet/data/config/cache
@@ -26,7 +27,7 @@ fi
 # For now always update apps file (until users can customize apps list)
 cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
-$DIR/create-crontab.sh
+. $DIR/create-crontab.sh
 
 CLOUDFLEET_OTP=$($DIR/get_otp.sh)
 

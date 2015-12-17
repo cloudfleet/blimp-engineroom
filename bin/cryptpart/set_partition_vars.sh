@@ -4,11 +4,8 @@
 # Since LUKS devices can't have labels, but only the decrypted mapped devices,
 # some convoluted approaches are necessary to make this yield the correct output.
 
-if [ $0 == "-bash" ]; then
-    DIR=.
-else
-    DIR=$( cd "$( dirname $0 )" && pwd )
-fi
+DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+set -x 
 
 # constants
 #----------
