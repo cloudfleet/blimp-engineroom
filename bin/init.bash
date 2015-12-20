@@ -16,7 +16,7 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     lsb_release -a
     lsblk --fs
     echo Initial ${CF_ENGINEROOM} git status
-    (cd ${CF_ENGINEROOM} && git status)
+    (cd ${CF_ENGINEROOM} && git status && git show --pretty=full -s)
 
     ## DEBUG Log all command invocations
     #set -x
