@@ -1,20 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 #
-# This file upgrades the operating system on the blimp
+# This file handles upgrades to the operating system on the Blimp
+#
 
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${DIR}/init.bash"
 
-echo "========================================"
-echo "`date "+%F %T"` Upgrading underlying operating system ..."
-echo "========================================"
+echo "====================================================================="
+echo "`date "+%F %T"` Checking on upgrades for operating system ..."
+echo "====================================================================="
 
 timestamp="$CF_VAR/last-os-upgrade.timestamp"
+upgraded_p=""
 
 function upgrade_and_update {
       touch $timestamp
       apt-get -y update
       apt-get -y upgrade
+      upgraded_p="t"
 }
     
 if [ -r $timestamp ]; then
@@ -25,6 +28,12 @@ else
     upgrade_and_update
 fi
 
-echo "========================================"
-echo "`date "+%F %T"` Upgraded underlying operating system"
-echo "========================================"
+if [[ -z "$upgraded_p" ]]; then
+    echo Upgrading finished.
+else
+    echo Skipped upgrade because previous engineroom OS upgrade occurred less than an hour ago.
+fi
+
+echo "==============================================================="
+echo "`date "+%F %T"` Finished operating system upgrade check"
+echo "==============================================================="
