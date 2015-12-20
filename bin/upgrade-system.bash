@@ -21,7 +21,7 @@ function upgrade_and_update {
 }
     
 if [ -r $timestamp ]; then
-    if [ -z $(find "$timestamp" -mtime -60m) ] ; then
+    if [ -z $(find "$timestamp" -mtime -1) ] ; then
         upgrade_and_update
     fi
 else
