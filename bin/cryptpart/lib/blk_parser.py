@@ -9,7 +9,9 @@ def parse_lsblk(lsblk_pairs_output):
     """Parse 'lsblk --pairs' output into dictionary."""
     disks = []
     for line in lsblk_pairs_output:
-        pairs = re.split('\s+', line)
+        # split on newlines after double quotes
+        # to avoid: splitting NAME="cf-swap (dm-1)"
+        pairs = re.split('\"\s+', line)
         d = {}
         for pair in pairs:
             key_value = re.split('="', pair)
@@ -17,7 +19,9 @@ def parse_lsblk(lsblk_pairs_output):
                 continue
             key = key_value[0]
             value = key_value[1]
-            value = value[:-1]
+            if len(value) > 0 and value[-1] == '"':
+                # remove trailing quote
+                value = value[:-1]
             d[key] = value
         node_type = d['TYPE']
         node_size = d['SIZE']
@@ -37,7 +41,13 @@ def parse_lsblk(lsblk_pairs_output):
             continue
         if node_type in set(['crypt']):
             node_name = d['NAME']
-            partition['crypt'] = node_name
+            node_name_parts = node_name.split(' ')
+            if len(node_name_parts) > 1:
+                # the odd case when NAME="cf-str (dm-0)"
+                partition['crypt'] = node_name_parts[0]
+            else:
+                # the usual case when NAME="cf-str"
+                partition['crypt'] = node_name
     return disks
 
 def parse_blk_orig(blk_file):
