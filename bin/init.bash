@@ -18,8 +18,8 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     echo Initial ${CF_ENGINEROOM} git status
     (cd ${CF_ENGINEROOM} && git status)
 
-    ## Log all command invocations
-    set -x
+    ## DEBUG Log all command invocations
+    #set -x
 
 fi
 
