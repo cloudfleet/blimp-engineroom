@@ -16,3 +16,8 @@ apps:
     needs_authentication: false
     dependencies:
       - musterroll
+  calendar:
+    friendly_name: Calendar
+    location: "calendar"
+    image: cloudfleet/blimp-calendar
+    needs_authentication: true
