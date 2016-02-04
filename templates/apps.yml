@@ -21,7 +21,7 @@ apps:
     location: "calendar"
     image: cloudfleet/blimp-calendar
     needs_authentication: false
-  calendar:
+  contacts:
     friendly_name: Contacts
     location: "contacts"
     image: cloudfleet/blimp-contacts
