@@ -9,6 +9,13 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . $DIR/upgrade-system.bash # First try to upgrade the OS
 $DIR/cryptpart/cryptpart_startup.sh
 
+# Copy cryptographic key
+storage_key=${CF_SHARED}/crypt/storage-key
+mkdir -p $(dirname $storage_key)
+cp /mnt/storage/key $storage_key
+#  TODO examine how we separate privileges
+chmod a+r $storage_key
+
 # now start the usual engineroom drill
 . "$DIR/upgrade-blimp.sh"
 
@@ -19,5 +26,6 @@ if [ -r ${CF_VAR}/startup.log ]; then
     cat ${CF_VAR}/startup.log >> ${CF_LOGS}/startup.log
     rm ${CF_VAR}/startup.log
 fi
+
 
 exit 0

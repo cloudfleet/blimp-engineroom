@@ -6,7 +6,7 @@ if [[ -z "$CF_INITIALIZED_P" ]] ; then
     export CF_LOGS=${CF_DATA}/logs
     export CF_ENGINEROOM=${CF}/engineroom
     export CF_BIN=${CF_ENGINEROOM}/bin
-
+    export CF_SHARED=${CF_DATA}/shared
 
     # Debug settings
 
