@@ -12,7 +12,7 @@ $DIR/cryptpart/cryptpart_startup.sh
 # Copy cryptographic key
 storage_key=${CF_SHARED}/crypt/storage-key
 mkdir -p $(dirname $storage_key)
-cp /mnt/storage/key $storage_key
+cp /mnt/storage-key/key $storage_key
 #  TODO examine how we separate privileges
 chmod a+r $storage_key
 
