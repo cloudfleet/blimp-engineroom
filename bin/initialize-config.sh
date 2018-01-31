@@ -31,9 +31,6 @@ cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
 CLOUDFLEET_OTP=$($DIR/get_otp.sh)
 
-mkdir -p /opt/cloudfleet/data/shared/tls
-cp $DIR/../templates/group16.pem /opt/cloudfleet/data/shared/tls/dhparams.pem
-
 if [ ! -f /opt/cloudfleet/data/config/domain.txt ]; then
   $DIR/request_domain.py $CLOUDFLEET_OTP
 fi
@@ -41,26 +38,6 @@ fi
 
 if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
   CLOUDFLEET_DOMAIN=$(cat /opt/cloudfleet/data/config/domain.txt)
-
-  if [ ! -f /opt/cloudfleet/data/shared/tls/tls_key.pem ]; then
-    openssl req -x509 -nodes -newkey rsa:4096 \
-      -keyout /opt/cloudfleet/data/shared/tls/tls_key.pem \
-      -out /opt/cloudfleet/data/shared/tls/tls_crt.pem \
-      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN && \
-    openssl req -new -sha256 \
-      -key /opt/cloudfleet/data/shared/tls/tls_key.pem \
-      -out /opt/cloudfleet/data/shared/tls/tls_req.pem \
-      -subj /C=/ST=/L=/O=CloudFleet/OU=/CN=blimp.$CLOUDFLEET_DOMAIN
-  fi
-
-  #if [ ! -f /opt/cloudfleet/data/shared/tls/cert-requested.status ]; then
-    $DIR/request_cert.py \
-        $CLOUDFLEET_DOMAIN \
-        $CLOUDFLEET_OTP \
-        /opt/cloudfleet/data/shared/tls/tls_req.pem \
-        && \
-        touch /opt/cloudfleet/data/shared/tls/cert-requested.status
-  #fi
 
   if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
     sleep 5
