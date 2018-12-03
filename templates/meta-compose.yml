@@ -1,50 +1,8 @@
 ---
-doveshed:
-  hostname: doveshed
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-doveshed"
-  environment:
-    CLOUDFLEET_MAIL_RELAY: "{{'cloudfleet.cloudfleet.io' | env('CLOUDFLEET_MAIL_RELAY')}}"
-    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
-    CLOUDFLEET_SECRET: "{{'registry.marina.io' | env('CLOUDFLEET_SECRET')}}"
-  volumes:
-    - "/opt/cloudfleet/data/shared/tls/tls_crt.pem:/usr/src/app/config/tls_cert.pem"
-    - "/opt/cloudfleet/data/shared/tls/tls_key.pem:/usr/src/app/config/tls_key.pem"
-
-mailbox:
-  hostname: mailbox
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mailbox"
-  volumes:
-    - "/opt/cloudfleet/data/shared/mails:/opt/cloudfleet/maildir"
-    - "/opt/cloudfleet/data/shared/users:/opt/cloudfleet/users"
-
-conduit:
-  hostname: "conduit"
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-conduit"
-  volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
-    - "/opt/cloudfleet/engineroom:/opt/cloudfleet/engineroom"
-    - "/opt/cloudfleet/data:/opt/cloudfleet/data"
-  environment:
-    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
-    CLOUDFLEET_REGISTRY: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}"
-    CLOUDFLEET_SECRET: "{{'secret' | env('CLOUDFLEET_SECRET')}}"
-
-musterroll:
-  hostname: "musterroll"
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-musterroll"
-  volumes:
-    - "/opt/cloudfleet/data/shared/users:/opt/cloudfleet/data"
-    - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/tls"
-  environment:
-    CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
-  links:
-    - "conduit"
-
-
 {% for app_name, app_properties in apps.iteritems() %}
 {{app_name}}:
     hostname: "{{app_name}}"
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}:{{'lates' | env('CLOUDFLEET_STAGE')}}"
     links:
       - musterroll
       - doveshed
@@ -54,47 +12,20 @@ musterroll:
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
 {% endfor %}
 
-{% for user_name, user in users.iteritems() %}
-mailpile{{user_name}}:
-    hostname: "mailpile-{{user_name}}"
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mailpile"
-    links:
-      - "doveshed"
-    volumes:
-      - "/opt/cloudfleet/data/shared/gnupg/{{user_name}}:/mailpile-data/.gnupg"
-      - "/opt/cloudfleet/data/shared/mails/{{user_name}}:/opt/cloudfleet/Mails"
-      - "/opt/cloudfleet/data/apps/mailpile/{{user_name}}:/mailpile-data/.local/share/Mailpile"
-    environment:
-      CLOUDFLEET_USER_FULLNAME: "{{user_name}}"
-      {% if 'aliases' in user %}
-      CLOUDFLEET_USER_ALIASES: "{{user.aliases | join(';')}}"
-      {% endif %}
-      CLOUDFLEET_USERNAME: "{{user_name}}"
-      CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
-
-{% endfor %}
-
+escapepod:
+  hostname: escapepod
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-escapepod"
 
 nginx:
-  hostname: nginx
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-nginx"
+  hostname: traefik
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-traefik"
   volumes:
     - "/opt/cloudfleet/data/config/cache/nginx:/opt/cloudfleet/conf/nginx"
     - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/conf/tls"
-  links:
-    - musterroll
-    - mailbox
-    - conduit
-    {% for app_name, app_properties in apps.iteritems() %}- {{app_name}}
-    {% endfor %}
-    {% for user_name in users.keys() %}- mailpile{{user_name}}
-    {% endfor %}
 
 pagekite:
   hostname: pagekite
   image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-pagekite"
-  links:
-    - "nginx"
   environment:
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_HOST: "{{'blimpyard.cloudfleet.io' | env('CLOUDFLEET_HOST')}}"

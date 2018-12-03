@@ -1,4 +1,0 @@
-NAME="mmcblk0" MAJ:MIN="179:0" RM="0" SIZE="14.7G" RO="0" TYPE="disk" MOUNTPOINT=""
-NAME="mmcblk0p1" MAJ:MIN="179:1" RM="0" SIZE="121M" RO="0" TYPE="part" MOUNTPOINT="/boot/firmware"
-NAME="mmcblk0p2" MAJ:MIN="179:2" RM="0" SIZE="2.9G" RO="0" TYPE="part" MOUNTPOINT="/"
-NAME="mmcblk0p3" MAJ:MIN="179:3" RM="0" SIZE="8G" RO="0" TYPE="part" MOUNTPOINT="/mnt/b"
