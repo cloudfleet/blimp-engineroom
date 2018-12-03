@@ -15,11 +15,12 @@ upgraded_p=""
 
 function upgrade_and_update {
       touch $timestamp
+      export DEBIAN_FRONTEND=noninteractive
       apt-get -y update
       apt-get -y upgrade
       upgraded_p="t"
 }
-    
+
 if [ -r $timestamp ]; then
     if [ -z $(find "$timestamp" -mtime -1) ] ; then
         upgrade_and_update
