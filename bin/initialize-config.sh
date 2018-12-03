@@ -19,6 +19,8 @@ echo Finished cryptpart
 # docker-compose will be rendered in this folder
 mkdir -p /opt/cloudfleet/data/config/cache
 mkdir -p /opt/cloudfleet/data/shared/users
+mkdir -p /opt/cloudfleet/data/logs
+
 
 if [ ! -f /opt/cloudfleet/data/shared/users/users.json ]; then
   echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
@@ -28,26 +30,6 @@ fi
 cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
 
 . $DIR/create-crontab.sh
-
-CLOUDFLEET_OTP=$($DIR/get_otp.sh)
-
-if [ ! -f /opt/cloudfleet/data/config/domain.txt ]; then
-  $DIR/request_domain.py $CLOUDFLEET_OTP
-fi
-
-
-if [ -f /opt/cloudfleet/data/config/domain.txt ]; then
-  CLOUDFLEET_DOMAIN=$(cat /opt/cloudfleet/data/config/domain.txt)
-
-  if [ ! -f /opt/cloudfleet/data/config/blimp-vars.sh ]; then
-    sleep 5
-    $DIR/request_secret.py \
-        $CLOUDFLEET_DOMAIN \
-        /opt/cloudfleet/data/shared/tls/tls_key.pem \
-        /opt/cloudfleet/data/shared/tls/tls_crt.pem \
-        /opt/cloudfleet/data/config/blimp-vars.sh
-  fi
-fi
 
 echo "====================================="
 echo "`date "+%F %T"`  Initialized config where necessary ... "

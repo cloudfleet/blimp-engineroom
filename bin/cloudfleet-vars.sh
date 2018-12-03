@@ -1,5 +1,4 @@
-CLOUDFLEET_HOST=blimpyard.cloudfleet.io:443
-CLOUDFLEET_MAIL_RELAY=cloudfleet.cloudfleet.io
+CLOUDFLEET_HOST=wateringhole.woolly.social:443
 if lscpu | grep -i ARMv7 ; then
   CLOUDFLEET_REGISTRY=registry.marina.io
 else
