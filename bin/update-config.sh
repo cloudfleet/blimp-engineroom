@@ -11,6 +11,7 @@ export CLOUDFLEET_HOST
 export CLOUDFLEET_REGISTRY
 export CLOUDFLEET_DOMAIN
 export CLOUDFLEET_SECRET
+export CLOUDFLEET_STAGE
 
 echo "====================================="
 echo "`date "+%F %T"`  Refreshing docker-compose file ... "
