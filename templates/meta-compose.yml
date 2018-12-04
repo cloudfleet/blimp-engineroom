@@ -3,9 +3,6 @@
 {{app_name}}:
     hostname: "{{app_name}}"
     image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}:{{'lates' | env('CLOUDFLEET_STAGE')}}"
-    links:
-      - musterroll
-      - doveshed
     volumes:
       - "/opt/cloudfleet/data/apps/{{app_name}}:/opt/cloudfleet/data"
     environment:
