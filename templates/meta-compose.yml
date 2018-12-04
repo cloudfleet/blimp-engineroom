@@ -2,7 +2,7 @@
 {% for app_name, app_properties in apps.iteritems() %}
 {{app_name}}:
     hostname: "{{app_name}}"
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}:{{'lates' | env('CLOUDFLEET_STAGE')}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/{{app_properties.image}}:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     volumes:
       - "/opt/cloudfleet/data/apps/{{app_name}}:/opt/cloudfleet/data"
     environment:
@@ -11,18 +11,17 @@
 
 escapepod:
   hostname: escapepod
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-escapepod"
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-escapepod:{{'latest' | env('CLOUDFLEET_STAGE')}}"
 
-nginx:
+traefik:
   hostname: traefik
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-traefik"
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-traefik:{{'latest' | env('CLOUDFLEET_STAGE')}}"
   volumes:
-    - "/opt/cloudfleet/data/config/cache/nginx:/opt/cloudfleet/conf/nginx"
     - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/conf/tls"
 
 pagekite:
   hostname: pagekite
-  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-pagekite"
+  image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-pagekite:{{'latest' | env('CLOUDFLEET_STAGE')}}"
   environment:
     CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     CLOUDFLEET_HOST: "{{'blimpyard.cloudfleet.io' | env('CLOUDFLEET_HOST')}}"
