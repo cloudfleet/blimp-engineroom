@@ -33,8 +33,8 @@ services:
     restart: always
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000 -b '0.0.0.0'"
     networks:
-      - external_network
-      - internal_network
+      - blimp
+      - mastodon
     depends_on:
       - mastodonpostgres
       - mastodonredis
@@ -47,7 +47,7 @@ services:
       # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
       SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
     labels:
-      - "traefik.docker.network=blimp_network"
+      - "traefik.docker.network=blimp"
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}};Path:/"
       - "traefik.port=3000"
@@ -59,15 +59,15 @@ services:
     restart: always
     command: yarn start
     networks:
-      - external_network
-      - internal_network
+      - blimp
+      - mastodon
     ports:
       - "127.0.0.1:4000:4000"
     depends_on:
       - mastodonpostgres
       - mastodonredis
     labels:
-      - "traefik.docker.network=blimp_network"
+      - "traefik.docker.network=blimp"
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}};Path:/api/v1/streaming"
       - "traefik.port=4000"
@@ -81,8 +81,7 @@ services:
       - mastodonpostgres
       - mastodonredis
     networks:
-      - external_network
-      - internal_network
+      - mastodon
     volumes:
       - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
 
@@ -101,8 +100,7 @@ services:
       - 80:80
       - 443:443
     networks:
-      - blimp_network
-      - pagekite_network
+      - blimp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/cloudfleet/data/shared/tls:/acme.json
@@ -114,10 +112,13 @@ services:
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
       CLOUDFLEET_HOST: "{{'blimpyard.cloudfleet.io' | env('CLOUDFLEET_HOST')}}"
       CLOUDFLEET_SECRET: "{{'secret' | env('CLOUDFLEET_SECRET')}}"
+    networks:
+      - blimp
+      - pagekite
 
 networks:
-  pagekite_network:
-  blimp_network:
+  pagekite:
+  blimp:
     internal: true
   mastodon:
     internal: true
