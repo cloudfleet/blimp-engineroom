@@ -38,7 +38,7 @@ services:
     depends_on:
       - mastodonpostgres
       - mastodonredis
-      - mastodonelastic
+    #  - mastodonelastic
     volumes:
       - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
     environment:
