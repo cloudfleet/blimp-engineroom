@@ -1,6 +1,0 @@
-apps:
-  mastodon:
-    friendly_name: Mastodon
-    location: /
-    image: cloudfleet/mastodon
-    needs_authentication: false
