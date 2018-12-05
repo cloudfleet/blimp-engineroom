@@ -85,9 +85,9 @@ services:
     volumes:
       - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
 
-  escapepod:
-    hostname: escapepod
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-escapepod:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+  # escapepod:
+  #   hostname: escapepod
+  #   image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-escapepod:{{'latest' | env('CLOUDFLEET_STAGE')}}"
 
   traefik:
     hostname: traefik
