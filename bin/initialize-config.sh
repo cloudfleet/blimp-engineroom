@@ -26,9 +26,6 @@ if [ ! -f /opt/cloudfleet/data/shared/users/users.json ]; then
   echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
 fi
 
-# For now always update apps file (until users can customize apps list)
-cp $DIR/../templates/apps.yml /opt/cloudfleet/data/config
-
 . $DIR/create-crontab.sh
 
 echo "====================================="
