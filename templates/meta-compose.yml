@@ -57,7 +57,6 @@ services:
   streaming:
     image: cloudfleet/blimp-mastodon
     restart: always
-    env_file: .env.production
     command: yarn start
     networks:
       - external_network
