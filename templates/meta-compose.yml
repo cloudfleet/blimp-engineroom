@@ -18,15 +18,15 @@ services:
     volumes:
       - /opt/cloudfleet/data/apps/mastodon/redis:/data
 
-  mastodonelastic:
-    restart: always
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.1.3
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    networks:
-      - mastodon
-    volumes:
-      - /opt/cloudfleet/data/apps/mastodon/es:/usr/share/elasticsearch/data
+  # mastodonelastic:
+  #   restart: always
+  #   image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.1.3
+  #   environment:
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   networks:
+  #     - mastodon
+  #   volumes:
+  #     - /opt/cloudfleet/data/apps/mastodon/elasticsearch:/usr/share/elasticsearch/data
 
   web:
     image: cloudfleet/blimp-mastodon
