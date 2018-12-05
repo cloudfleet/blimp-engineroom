@@ -19,8 +19,6 @@ echo "====================================="
 
 cd $DIR/../templates
 meta-compose \
-  -d /opt/cloudfleet/data/config/apps.yml \
-  -d /opt/cloudfleet/data/shared/users/users.json \
   -o /opt/cloudfleet/data/config/cache/docker-compose.yml
 
 echo "====================================="
