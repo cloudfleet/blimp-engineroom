@@ -29,7 +29,7 @@ services:
   #     - /opt/cloudfleet/data/apps/mastodon/elasticsearch:/usr/share/elasticsearch/data
 
   mastodonweb:
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: web
     networks:
@@ -56,7 +56,7 @@ services:
 
 
   mastodonstreaming:
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: streaming
     networks:
@@ -80,7 +80,7 @@ services:
       - "traefik.protocol=http"
 
   mastodonsidekiq:
-    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: sidekiq
     depends_on:
