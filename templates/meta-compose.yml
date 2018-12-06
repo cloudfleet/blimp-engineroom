@@ -40,7 +40,8 @@ services:
       - mastodonredis
     #  - mastodonelastic
     volumes:
-      - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
+      - /opt/cloudfleet/data/apps/mastodon/mastodon/config/secrets:/mastodon/secrets
+      - /opt/cloudfleet/data/apps/mastodon/mastodon/public/system:/mastodon/public/system
     environment:
       LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
       WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
