@@ -28,10 +28,10 @@ services:
   #   volumes:
   #     - /opt/cloudfleet/data/apps/mastodon/elasticsearch:/usr/share/elasticsearch/data
 
-  web:
+  mastodonweb:
     image: cloudfleet/blimp-mastodon
     restart: always
-    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: web
     networks:
       - blimp
       - mastodon
@@ -54,10 +54,10 @@ services:
       - "traefik.protocol=http"
 
 
-  streaming:
+  mastodonstreaming:
     image: cloudfleet/blimp-mastodon
     restart: always
-    command: yarn start
+    command: streaming
     networks:
       - blimp
       - mastodon
@@ -73,10 +73,10 @@ services:
       - "traefik.port=4000"
       - "traefik.protocol=http"
 
-  sidekiq:
+  mastodonsidekiq:
     image: cloudfleet/blimp-mastodon
     restart: always
-    command: bundle exec sidekiq
+    command: sidekiq
     depends_on:
       - mastodonpostgres
       - mastodonredis
@@ -91,7 +91,6 @@ services:
 
   traefik:
     hostname: traefik
-    container_name: traefik
     image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-traefik:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     volumes:
       - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/conf/tls"
