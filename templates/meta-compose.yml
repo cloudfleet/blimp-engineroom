@@ -29,7 +29,7 @@ services:
   #     - /opt/cloudfleet/data/apps/mastodon/elasticsearch:/usr/share/elasticsearch/data
 
   mastodonweb:
-    image: cloudfleet/blimp-mastodon
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: web
     networks:
@@ -55,7 +55,7 @@ services:
 
 
   mastodonstreaming:
-    image: cloudfleet/blimp-mastodon
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: streaming
     networks:
@@ -66,6 +66,11 @@ services:
     depends_on:
       - mastodonpostgres
       - mastodonredis
+    environment:
+      LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
+      SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
     labels:
       - "traefik.docker.network=blimp"
       - "traefik.enable=true"
@@ -74,7 +79,7 @@ services:
       - "traefik.protocol=http"
 
   mastodonsidekiq:
-    image: cloudfleet/blimp-mastodon
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     restart: always
     command: sidekiq
     depends_on:
@@ -84,6 +89,11 @@ services:
       - mastodon
     volumes:
       - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
+    environment:
+      LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
+      SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
 
   # escapepod:
   #   hostname: escapepod
