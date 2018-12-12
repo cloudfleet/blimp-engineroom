@@ -129,6 +129,5 @@ services:
 networks:
   pagekite:
   blimp:
-    internal: true
   mastodon:
     internal: true
