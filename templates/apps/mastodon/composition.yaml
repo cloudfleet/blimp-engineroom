@@ -1,0 +1,93 @@
+  mastodonpostgres:
+    restart: always
+    image: postgres:9.6-alpine
+    networks:
+      - mastodon
+    volumes:
+      - /opt/cloudfleet/data/apps/mastodon/postgres:/var/lib/postgresql/data
+
+  mastodonredis:
+    restart: always
+    image: redis:4.0-alpine
+    networks:
+      - mastodon
+    volumes:
+      - /opt/cloudfleet/data/apps/mastodon/redis:/data
+
+  # mastodonelastic:
+  #   restart: always
+  #   image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.1.3
+  #   environment:
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   networks:
+  #     - mastodon
+  #   volumes:
+  #     - /opt/cloudfleet/data/apps/mastodon/elasticsearch:/usr/share/elasticsearch/data
+
+  mastodonweb:
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    restart: always
+    command: web
+    networks:
+      - blimp
+      - mastodon
+    depends_on:
+      - mastodonpostgres
+      - mastodonredis
+    #  - mastodonelastic
+    volumes:
+      - /opt/cloudfleet/data/apps/mastodon/mastodon/config/secrets:/mastodon/secrets
+      - /opt/cloudfleet/data/apps/mastodon/mastodon/public/system:/mastodon/public/system
+    environment:
+      LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
+      SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+    labels:
+      - "traefik.docker.network=blimp"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}};Path:/"
+      - "traefik.port=3000"
+      - "traefik.protocol=http"
+
+
+  mastodonstreaming:
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    restart: always
+    command: streaming
+    networks:
+      - blimp
+      - mastodon
+    ports:
+      - "127.0.0.1:4000:4000"
+    depends_on:
+      - mastodonpostgres
+      - mastodonredis
+    environment:
+      LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
+      SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+    labels:
+      - "traefik.docker.network=blimp"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}};Path:/api/v1/streaming"
+      - "traefik.port=4000"
+      - "traefik.protocol=http"
+
+  mastodonsidekiq:
+    image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-mastodon:{{'latest' | env('CLOUDFLEET_STAGE')}}"
+    restart: always
+    command: sidekiq
+    depends_on:
+      - mastodonpostgres
+      - mastodonredis
+    networks:
+      - mastodon
+    volumes:
+      - /opt/cloudfleet/data/apps/mastodon/mastodon:/mastodon/public/system
+    environment:
+      LOCAL_DOMAIN: {{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+      # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
+      SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
