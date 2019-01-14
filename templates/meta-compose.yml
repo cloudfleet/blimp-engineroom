@@ -43,6 +43,7 @@ services:
     hostname: pagekite
     image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-pagekite:{{'latest' | env('CLOUDFLEET_STAGE')}}"
     environment:
+      SUBDOMAINS: "cockpit;musterroll;{{';'.join(apps)}}"
       CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
       CLOUDFLEET_SPIRE_HOST: "{{'spire.cloudfleet.io' | env('CLOUDFLEET_SPIRE_HOST')}}"
       CLOUDFLEET_SECRET: "{{'secret' | env('CLOUDFLEET_SECRET')}}"
