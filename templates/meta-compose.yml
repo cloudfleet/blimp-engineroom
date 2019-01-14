@@ -11,10 +11,9 @@ services:
     hostname: "musterroll"
     image: "{{'registry.marina.io' | env('CLOUDFLEET_REGISTRY')}}/cloudfleet/blimp-musterroll"
     volumes:
-      - "/opt/cloudfleet/data/shared/users:/opt/cloudfleet/data"
-      - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/tls"
+      - "/opt/cloudfleet/data/shared/users:/home/node/app/data"
     environment:
-      CLOUDFLEET_DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
+      DOMAIN: "{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}"
     networks:
       - blimp
 
