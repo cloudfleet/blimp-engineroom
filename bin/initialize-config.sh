@@ -22,10 +22,6 @@ mkdir -p /opt/cloudfleet/data/shared/users
 mkdir -p /opt/cloudfleet/data/logs
 
 
-if [ ! -f /opt/cloudfleet/data/shared/users/users.json ]; then
-  echo "{users:{}}" > /opt/cloudfleet/data/shared/users/users.json
-fi
-
 . $DIR/create-crontab.sh
 
 echo "====================================="
