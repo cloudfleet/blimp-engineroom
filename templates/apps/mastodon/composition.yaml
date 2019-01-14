@@ -1,3 +1,4 @@
+
   mastodonpostgres:
     restart: always
     image: postgres:9.6-alpine
