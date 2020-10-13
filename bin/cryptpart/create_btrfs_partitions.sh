@@ -7,11 +7,9 @@ DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/data
 btrfs subvolume create ${STORAGE_MOUNTPOINT}/docker
 
-btrfs subvol list $STORAGE_MOUNTPOINT
-
 # potentially stop all running containers
 docker_pids=$(docker ps -a -q)
-if [[ ! -z "${docker_pids}" ]]; then 
+if [[ ! -z "${docker_pids}" ]]; then
     docker stop $docker_pids
 fi
 
@@ -25,12 +23,6 @@ if [ -d $CLOUDFLEET_DATA_PATH ] ; then
     rsync -avz ${CLOUDFLEET_DATA_PATH}/ /tmp/cf-data/
 fi
 
-# if [ -d $DOCKER_DATA_PATH ] ; then
-#     mv ${DOCKER_DATA_PATH}/* /tmp/docker-data/
-# fi
-
-# we're not gonna try copying docker data, because there's too much
-# And we're not gonna remove it in case we need it again
 
 # in case it was on an external drive
 umount /var/lib/docker
@@ -39,9 +31,6 @@ umount /var/lib/docker
 mkdir -p $CLOUDFLEET_DATA_PATH
 mkdir -p $DOCKER_DATA_PATH
 
-# diagnostics
-mtree_keywords="flags,gid,mode,nlink,size,link,uid" # don't include time
-fmtree -c -k "${mtree_keywords}" -p /opt/cloudfleet/data > /opt/cloudfleet/opt-cloudfleet-data.mtree
 
 # These partitions are now marked noauto
 sync
@@ -60,22 +49,8 @@ sync
 
 # move data back
 rsync -avz /tmp/cf-data/ ${CLOUDFLEET_DATA_PATH}/
-#mv /tmp/docker-data/* ${DOCKER_DATA_PATH}/
 sync
 
-# Compare filesystem with original
-fmtree -k "${mtree_keywords}" -p /opt/cloudfleet/data < /opt/cloudfleet/opt-cloudfleet-data.mtree
-if [ $? -ne 0 ]; then
-    echo Mismatch in ${CLOUDFLEET_DATA_PATH} mtree
-    read -n 1 -r -p "Press the ANY key to continue..." # DEBUG
-fi 
-
-## DON'T remove temporary folders (we can fallback to known good
-## boot).  They should be gone at next reboot anyways.
-
-## set permissions
-#chmod 700 ${CLOUDFLEET_DATA_PATH}
-#chmod 700 ${DOCKER_DATA_PATH}
 
 # once again to be sure
 mount /var/lib/docker
