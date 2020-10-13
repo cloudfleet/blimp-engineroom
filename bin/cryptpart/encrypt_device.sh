@@ -122,27 +122,18 @@ mount -t btrfs $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 
 # convert devices to UUIDs/labels, not sda/sdb before writing fstab/crypttab
 echo " - get partitions as UUIDs/labels"
-#SWAP_PARTITION_UUID=/dev/disk/by-label/$(blkid -s LABEL -o value $SWAP_PARTITION)
-# actually use id for swap, because its label & uuid is different after every restart
-#SWAP_PARTITION_BY_LABEL=/dev/disk/by-label/${SWAP_PARTITION_LABEL}
-SWAP_PARTITION_BY_ID=$(./get_part_id.py $SWAP_PARTITION)
-echo $SWAP_PARTITION $SWAP_PARTITION_BY_ID
 STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(blkid -s UUID -o value $STORAGE_PARTITION)
 #STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(cryptsetup luksUUID $STORAGE_PARTITION)
 echo $STORAGE_PARTITION $STORAGE_PARTITION_BY_UUID
 
 # decrypt and mount automatically on boot
 echo " - write crypttab"
-$DIR/write_crypttab.sh $SWAP_PARTITION_BY_ID $STORAGE_PARTITION_BY_UUID
+$DIR/write_crypttab.sh $STORAGE_PARTITION_BY_UUID
 echo " - open encrypted devices using crypttab"
-cryptdisks_start $SWAP_PARTITION_LABEL
 cryptdisks_start $STORAGE_PARTITION_LABEL
 
 echo " - write fstab"
 $DIR/write_fstab.sh
-
-# start using the swap
-swapon $SWAP_MAPPED_DEVICE
 
 $DIR/create_btrfs_partitions.sh
 
