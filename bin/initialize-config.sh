@@ -9,13 +9,6 @@ echo "====================================="
 echo "`date "+%F %T"`  Initializing config where necessary ... "
 echo "====================================="
 
-# check that USBs with correctly labeled partitions exist and if so
-# prepare and encrypt key, storage, swap
-# XXX potentially move out of initialize config, as it has potential fatal side effects
-echo Launching cryptpart
-(cd $DIR/cryptpart; . ./encrypt_device.sh)
-echo Finished cryptpart
-
 # docker-compose will be rendered in this folder
 mkdir -p /opt/cloudfleet/data/config/cache
 mkdir -p /opt/cloudfleet/data/shared/users
