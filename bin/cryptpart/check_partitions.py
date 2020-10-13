@@ -6,22 +6,18 @@ import fileinput
 from lib.blk_parser import parse_lsblk, SWAP_LABEL, STORAGE_LABEL
 
 def check_correct(disks):
-    """Check if swap and storage are available in lsblk output and encrypted"""
-    #import pdb; pdb.set_trace()
-    swap_encrypted = False
+    """Check if storage is available in lsblk output and encrypted"""
     storage_encrypted = False
     for disk in disks:
         if 'partitions' not in disk:
             continue
         for partition in disk['partitions']:
             try:
-                if partition['crypt'] == SWAP_LABEL:
-                    swap_encrypted = True
                 if partition['crypt'] == STORAGE_LABEL:
                     storage_encrypted = True
             except KeyError:
                 pass
-    return swap_encrypted and storage_encrypted
+    return storage_encrypted
 
 # Return via sys.exit()
 #  0 means don't either the partitions are ok, or that an exception has been thrown
