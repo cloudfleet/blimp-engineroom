@@ -14,6 +14,7 @@ echo "`date "+%F %T"` Upgrading blimp ..."
 echo "========================================"
 
 T="$(date +%s)"
+(cd $DIR/bin/cryptpart && ./encrypt_device.sh)
 . $DIR/upgrade-system.bash
 . $DIR/upgrade-engine-room.sh
 . $DIR/initialize-config.sh
