@@ -40,14 +40,12 @@ def main(argv):
         else:
             # try to read the piped input
             result = parse_lsblk(fileinput.input())
-        if result: 
-            pprint.PrettyPrinter(indent=4).pprint(result)
         is_correct = check_correct(result)
         print('Are the correctly formatted USB keys for encryption mounted?  {}'.format(is_correct))
     except:
         print "Exception in running partition check: %s %s\n%s" % (sys.exc_type, sys.exc_value, sys.exc_traceback)
         sys.exit(0)
-    sys.exit(int(not is_correct)) 
+    sys.exit(int(not is_correct))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

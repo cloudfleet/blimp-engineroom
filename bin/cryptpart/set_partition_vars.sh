@@ -7,23 +7,18 @@
 DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ## DEBUG whether to log all command invocations
-# set -x 
+# set -x
 
 # constants
 #----------
 # predefined labels
 KEY_PARTITION_LABEL=cf-key
-SWAP_PARTITION_LABEL=cf-swap
 STORAGE_PARTITION_LABEL=cf-str
-
-echo "labels: ${KEY_PARTITION_LABEL}, ${SWAP_PARTITION_LABEL}, ${STORAGE_PARTITION_LABEL}"
 
 BASE_MOUNTPOINT=/mnt
 
 # predefined data paths
-#CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data2
 CLOUDFLEET_DATA_PATH=/opt/cloudfleet/data
-#DOCKER_DATA_PATH=/opt/cloudfleet/docker2
 DOCKER_DATA_PATH=/var/lib/docker
 
 # key
@@ -31,11 +26,8 @@ DOCKER_DATA_PATH=/var/lib/docker
 # - always on the same label == easy peasy
 # - we keep the label pointer, as sda/sdb might change after reboot
 KEY_PARTITION=/dev/disk/by-label/${KEY_PARTITION_LABEL}
-# KEY_PARTITION=$(readlink -e ${KEY_PARTITION}) # render to real partition
 KEY_MOUNTPOINT=${BASE_MOUNTPOINT}/storage-key
 KEYFILE=$KEY_MOUNTPOINT/key
-#KEYFILE=/root/key
-echo "key: ${KEY_PARTITION}, ${KEY_MOUNTPOINT}"
 
 # storage & swap
 #---------------
@@ -82,5 +74,3 @@ SWAP_MAPPED_DEVICE=/dev/mapper/$SWAP_PARTITION_LABEL
 STORAGE_MAPPED_DEVICE=/dev/mapper/$STORAGE_PARTITION_LABEL
 
 STORAGE_MOUNTPOINT=${BASE_MOUNTPOINT}/storage
-echo "storage: ${STORAGE_DEVICE}, ${STORAGE_PARTITION}, ${STORAGE_MAPPED_DEVICE}, ${STORAGE_MOUNTPOINT}"
-echo "swap: ${SWAP_PARTITION}, ${SWAP_MAPPED_DEVICE}"
