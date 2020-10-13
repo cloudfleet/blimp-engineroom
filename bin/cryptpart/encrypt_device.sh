@@ -111,14 +111,6 @@ cryptsetup --batch-mode --verbose luksFormat --key-file $KEYFILE $STORAGE_PARTIT
 echo " - open encrypted storage partition"
 cryptsetup open $STORAGE_PARTITION $STORAGE_PARTITION_LABEL --key-file $KEYFILE
 
-#echo " - add key once again"
-#cryptsetup luksAddKey $STORAGE_PARTITION $KEYFILE
-
-# format the swap
-echo " - format the swap"
-#mkswap $SWAP_MAPPED_DEVICE
-mkswap -L ${SWAP_PARTITION_LABEL} $SWAP_PARTITION
-
 # format it to btrfs
 mkfs.btrfs $STORAGE_MAPPED_DEVICE -L $STORAGE_PARTITION_LABEL
 
