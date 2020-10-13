@@ -123,8 +123,6 @@ mount -t btrfs $STORAGE_MAPPED_DEVICE $STORAGE_MOUNTPOINT
 # convert devices to UUIDs/labels, not sda/sdb before writing fstab/crypttab
 echo " - get partitions as UUIDs/labels"
 STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(blkid -s UUID -o value $STORAGE_PARTITION)
-#STORAGE_PARTITION_BY_UUID=/dev/disk/by-uuid/$(cryptsetup luksUUID $STORAGE_PARTITION)
-echo $STORAGE_PARTITION $STORAGE_PARTITION_BY_UUID
 
 # decrypt and mount automatically on boot
 echo " - write crypttab"
