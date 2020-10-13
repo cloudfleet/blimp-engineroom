@@ -87,11 +87,7 @@ systemctl disable docker.service
 echo " - format device"
 $DIR/format_device.sh $STORAGE_DEVICE
 
-# now /dev/disk/by-label/cf-str points to the wrong thing
-echo " - remove wrong link and set partition variables"
-ls -lha /dev/disk/by-label
-rm /dev/disk/by-label/${STORAGE_PARTITION_LABEL} # udevadm trigger - resets it
-STORAGE_PARTITION="${STORAGE_DEVICE}2"
+STORAGE_PARTITION="${STORAGE_DEVICE}1"
 
 echo "mount key device"
 mkdir -p $KEY_MOUNTPOINT
