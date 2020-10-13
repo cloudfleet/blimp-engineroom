@@ -24,15 +24,8 @@ n
 p
 1
 
-+2G
-n
-p
-2
-
 
 w
 " | fdisk $i; done
-
-#; mkfs.ext3 $i;done 
 
 exit
