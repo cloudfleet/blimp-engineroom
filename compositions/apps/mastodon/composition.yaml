@@ -1,4 +1,7 @@
+---
+version: '3'
 
+services:
   mastodonpostgres:
     restart: always
     image: postgres:9.6-alpine
@@ -92,3 +95,7 @@
       WEB_DOMAIN: mastodon.{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
       # ALTERNATE_DOMAINS: example1.com,example2.com  FIXME create wy to deal with additional domains
       SMTP_FROM_ADDRESS: mastodon@{{'myblimp.net' | env('CLOUDFLEET_DOMAIN')}}
+
+networks:
+  mastodon:
+    internal: true

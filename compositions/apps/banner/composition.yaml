@@ -1,0 +1,13 @@
+---
+version: '3'
+
+services:
+  banner:
+    restart: always
+    image: ${CLOUDFLEET_REGISTRY}/library/nginx:${CLOUDFLEET_STAGE}
+    networks:
+      - blimp
+    labels:
+      - traefik.http.routers.banner.rule=Host(`banner.${CLOUDFLEET_DOMAIN}`)
+      - traefik.http.routers.banner.tls=true
+      - traefik.enable=true

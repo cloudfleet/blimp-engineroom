@@ -1,0 +1,52 @@
+---
+version: '3'
+
+services:
+
+  musterroll:
+    hostname: "musterroll"
+    image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-musterroll:${CLOUDFLEET_STAGE}"
+    volumes:
+      - "/opt/cloudfleet/data/shared/users:/home/node/app/data"
+    environment:
+      DOMAIN: "${CLOUDFLEET_DOMAIN}"
+    networks:
+      - blimp
+    labels:
+      - traefik.http.routers.banner.rule=Host(`users.${CLOUDFLEET_DOMAIN}`)
+      - traefik.http.routers.banner.tls=true
+      - traefik.enable=true
+
+  escapepod:
+    hostname: escapepod
+    image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-escapepod:${CLOUDFLEET_STAGE}"
+    networks:
+      - blimp
+
+  traefik:
+    hostname: traefik
+    image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-traefik:${CLOUDFLEET_STAGE}"
+    volumes:
+      - "/opt/cloudfleet/data/shared/tls:/opt/cloudfleet/conf/tls"
+    restart: always
+    networks:
+      - blimp
+      - pagekite
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/cloudfleet/data/shared/tls:/acme.json
+
+  pagekite:
+    hostname: pagekite
+    image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-pagekite:${CLOUDFLEET_STAGE}"
+    environment:
+      SUBDOMAINS: "cockpit;musterroll;{{';'.join(apps)}}"
+      CLOUDFLEET_DOMAIN: "${CLOUDFLEET_DOMAIN}"
+      CLOUDFLEET_SPIRE_HOST: "${CLOUDFLEET_SPIRE_HOST}"
+      CLOUDFLEET_SECRET: "${CLOUDFLEET_SECRET}"
+    networks:
+      - pagekite
+
+networks:
+  pagekite:
+  blimp:

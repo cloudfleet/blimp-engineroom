@@ -18,7 +18,6 @@ T="$(date +%s)"
 . $DIR/upgrade-system.bash
 . $DIR/upgrade-engine-room.sh
 . $DIR/initialize-config.sh
-. $DIR/update-config.sh
 . $DIR/upgrade-containers.sh
 T="$(($(date +%s)-T))"
 
