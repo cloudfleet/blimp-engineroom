@@ -17,11 +17,11 @@ services:
       - traefik.http.routers.banner.tls=true
       - traefik.enable=true
 
-  escapepod:
-    hostname: escapepod
-    image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-escapepod:${CLOUDFLEET_STAGE}"
-    networks:
-      - blimp
+  # escapepod:
+  #   hostname: escapepod
+  #   image: "${CLOUDFLEET_REGISTRY}/cloudfleet/blimp-escapepod:${CLOUDFLEET_STAGE}"
+  #   networks:
+  #     - blimp
 
   traefik:
     hostname: traefik

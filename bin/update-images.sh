@@ -12,7 +12,7 @@ docker-compose -p blimp \
   -f $DIR/../compositions/docker-compose.yml \
   -f $DIR/../compositions/apps/banner/composition.yml \
   --env-file /opt/cloudfleet/data/config/blimp.env \
-  pull
+  pull -q
 
 echo "=================================="
 echo "`date "+%F %T"` Fetched new image versions."
