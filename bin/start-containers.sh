@@ -11,8 +11,8 @@ echo "=============================="
 
 function run_compose(){
     docker-compose -p blimp \
-      -f $DIR/../compositions/docker-compose.yml \
-      -f $DIR/../compositions/apps/banner/composition.yml \
+      -f $DIR/../../compositions/docker-compose.yml \
+      -f $DIR/../../compositions/apps/banner/composition.yml \
       up -d
 }
 run_compose
